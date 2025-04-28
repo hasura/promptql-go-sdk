@@ -1,0 +1,6 @@
+{
+	"withGoMod": false,
+	"packageName": "api",
+	"generateUnmarshalJSON": true,
+	"generateMarshalJSON": true
+}

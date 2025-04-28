@@ -1,0 +1,707 @@
+openapi: 3.1.0
+info:
+  description: PromptQL API
+  title: PromptQL API
+  version: 0.0.1
+servers:
+- url: /
+paths:
+  /execute_program:
+    post:
+      operationId: execute_program_execute_program_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecuteRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptQlExecutionResult'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - HTTPBearer: []
+      summary: Execute Program
+  /query:
+    post:
+      operationId: query_query_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryResponse'
+            text/event-stream:
+              example: |+
+                data: {"message":"Let me try to store an artifact","plan":null,"code":null,"code_output":null,"code_error":null,"type":"assistant_action_chunk","index":0}
+
+                data: {"message":null,"plan":"- Store an artifact with sample data","code":null,"code_output":null,"code_error":null,"type":"assistant_action_chunk","index":0}
+
+                data: {"message":null,"plan":null,"code":"executor.store_artitfact('test', 'Test artifact', 'table', [{'foo':'bar'}])","code_output":null,"code_error":null,"type":"assistant_action_chunk","index":0}
+
+                data: {"message":null,"plan":null,"code":null,"code_output":"Artifact stored","code_error":null,"type":"assistant_action_chunk","index":0}
+
+                data: {"type":"artifact_update_chunk","artifact":{"identifier":"test","title":"Test Artifact","artifact_type":"table","data":[{"foo":"bar"}]}}
+
+                data: {"message":"Your artifact is <artifact","plan":null,"code":null,"code_output":null,"code_error":null,"type":"assistant_action_chunk","index":1}
+
+                data: {"message":" identifier='test'/>","plan":null,"code":null,"code_output":null,"code_error":null,"type":"assistant_action_chunk","index":1}
+
+              schema:
+                $ref: '#/components/schemas/QueryResponseChunk'
+          description: Either a JSON response (QueryResponse object) or a stream of
+            Server-Sent Events (SSE) (QueryResponseChunk objects) depending on whether
+            the 'stream' parameter was set
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - HTTPBearer: []
+      summary: Query
+components:
+  schemas:
+    ApiAnthropicConfig:
+      properties:
+        provider:
+          enum:
+          - anthropic
+          title: Provider
+          type: string
+        model:
+          nullable: true
+          type: string
+        base_url:
+          nullable: true
+          type: string
+        api_key:
+          title: Api Key
+          type: string
+      required:
+      - api_key
+      - provider
+      title: ApiAnthropicConfig
+    ApiOpenAIConfig:
+      properties:
+        provider:
+          enum:
+          - openai
+          title: Provider
+          type: string
+        model:
+          nullable: true
+          type: string
+        base_url:
+          nullable: true
+          type: string
+        api_key:
+          title: Api Key
+          type: string
+      required:
+      - api_key
+      - provider
+      title: ApiOpenAIConfig
+    AssistantAction:
+      example:
+        code: code
+        code_error: code_error
+        message: message
+        plan: plan
+        code_output: code_output
+      properties:
+        message:
+          nullable: true
+          type: string
+        plan:
+          nullable: true
+          type: string
+        code:
+          nullable: true
+          type: string
+        code_output:
+          nullable: true
+          type: string
+        code_error:
+          nullable: true
+          type: string
+      title: AssistantAction
+    DdnConfig:
+      example:
+        headers:
+          key: headers
+        url: url
+      properties:
+        url:
+          description: URL of the /sql endpoint on Hasura DDN
+          title: Url
+          type: string
+        headers:
+          additionalProperties:
+            type: string
+          description: HTTP headers that should be forwarded to DDN
+          title: Headers
+      required:
+      - url
+      title: DdnConfig
+    ExecuteRequest:
+      example:
+        code: code
+        ai_primitives_llm:
+          provider: hasura
+        promptql_api_key: promptql_api_key
+        ddn:
+          headers:
+            key: headers
+          url: url
+        artifacts:
+        - identifier: identifier
+          artifact_type: text
+          data: data
+          title: title
+        - identifier: identifier
+          artifact_type: text
+          data: data
+          title: title
+      properties:
+        code:
+          title: Code
+          type: string
+        promptql_api_key:
+          nullable: true
+          type: string
+        ai_primitives_llm:
+          $ref: '#/components/schemas/ExecuteRequest_ai_primitives_llm'
+        ddn:
+          $ref: '#/components/schemas/DdnConfig'
+        artifacts:
+          items:
+            $ref: '#/components/schemas/ExecuteRequest_artifacts_inner'
+          type: array
+      required:
+      - ai_primitives_llm
+      - artifacts
+      - code
+      - ddn
+      title: ExecuteRequest
+    HTTPValidationError:
+      example:
+        detail:
+        - msg: msg
+          loc:
+          - ValidationError_loc_inner
+          - ValidationError_loc_inner
+          type: type
+        - msg: msg
+          loc:
+          - ValidationError_loc_inner
+          - ValidationError_loc_inner
+          type: type
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+      title: HTTPValidationError
+    HasuraLlmConfig:
+      example:
+        provider: hasura
+      properties:
+        provider:
+          enum:
+          - hasura
+          title: Provider
+          type: string
+      required:
+      - provider
+      title: HasuraLlmConfig
+    Interaction:
+      example:
+        assistant_actions:
+        - code: code
+          code_error: code_error
+          message: message
+          plan: plan
+          code_output: code_output
+        - code: code
+          code_error: code_error
+          message: message
+          plan: plan
+          code_output: code_output
+        user_message:
+          text: text
+      properties:
+        user_message:
+          $ref: '#/components/schemas/UserMessage'
+        assistant_actions:
+          items:
+            $ref: '#/components/schemas/AssistantAction'
+          type: array
+      required:
+      - user_message
+      title: Interaction
+    LlmUsage:
+      example:
+        provider: unknown
+        model: unknown
+        output_tokens: 6
+        input_tokens: 0
+      properties:
+        provider:
+          default: unknown
+          title: Provider
+          type: string
+        model:
+          default: unknown
+          title: Model
+          type: string
+        input_tokens:
+          default: 0
+          title: Input Tokens
+          type: integer
+        output_tokens:
+          default: 0
+          title: Output Tokens
+          type: integer
+      title: LlmUsage
+    PromptQlExecutionResult:
+      example:
+        output: output
+        llm_usages:
+        - provider: unknown
+          model: unknown
+          output_tokens: 6
+          input_tokens: 0
+        - provider: unknown
+          model: unknown
+          output_tokens: 6
+          input_tokens: 0
+        error: error
+        accessed_artifact_ids:
+        - accessed_artifact_ids
+        - accessed_artifact_ids
+        modified_artifacts:
+        - identifier: identifier
+          artifact_type: text
+          data: data
+          title: title
+        - identifier: identifier
+          artifact_type: text
+          data: data
+          title: title
+      properties:
+        output:
+          title: Output
+          type: string
+        error:
+          nullable: true
+          type: string
+        accessed_artifact_ids:
+          items:
+            type: string
+          type: array
+        modified_artifacts:
+          items:
+            $ref: '#/components/schemas/ExecuteRequest_artifacts_inner'
+          type: array
+        llm_usages:
+          items:
+            $ref: '#/components/schemas/LlmUsage'
+          type: array
+      required:
+      - accessed_artifact_ids
+      - error
+      - llm_usages
+      - modified_artifacts
+      - output
+      title: PromptQlExecutionResult
+    QueryRequest:
+      example:
+        ai_primitives_llm:
+          provider: hasura
+        stream: true
+        timezone: timezone
+        promptql_api_key: promptql_api_key
+        llm:
+          provider: hasura
+        version: v1
+        system_instructions: system_instructions
+        ddn:
+          headers:
+            key: headers
+          url: url
+        artifacts:
+        - identifier: identifier
+          artifact_type: text
+          data: data
+          title: title
+        - identifier: identifier
+          artifact_type: text
+          data: data
+          title: title
+        interactions:
+        - assistant_actions:
+          - code: code
+            code_error: code_error
+            message: message
+            plan: plan
+            code_output: code_output
+          - code: code
+            code_error: code_error
+            message: message
+            plan: plan
+            code_output: code_output
+          user_message:
+            text: text
+        - assistant_actions:
+          - code: code
+            code_error: code_error
+            message: message
+            plan: plan
+            code_output: code_output
+          - code: code
+            code_error: code_error
+            message: message
+            plan: plan
+            code_output: code_output
+          user_message:
+            text: text
+      properties:
+        version:
+          enum:
+          - v1
+          title: Version
+          type: string
+        promptql_api_key:
+          nullable: true
+          type: string
+        llm:
+          $ref: '#/components/schemas/Llm'
+        ai_primitives_llm:
+          $ref: '#/components/schemas/ExecuteRequest_ai_primitives_llm'
+        ddn:
+          $ref: '#/components/schemas/DdnConfig'
+        artifacts:
+          items:
+            $ref: '#/components/schemas/ExecuteRequest_artifacts_inner'
+          type: array
+        system_instructions:
+          nullable: true
+          type: string
+        timezone:
+          description: An IANA timezone used to interpret queries that implicitly
+            require timezones
+          title: Timezone
+          type: string
+        interactions:
+          items:
+            $ref: '#/components/schemas/Interaction'
+          type: array
+        stream:
+          title: Stream
+          type: boolean
+      required:
+      - ddn
+      - interactions
+      - stream
+      - timezone
+      - version
+      title: QueryRequest
+    QueryResponse:
+      example:
+        assistant_actions:
+        - code: code
+          code_error: code_error
+          message: message
+          plan: plan
+          code_output: code_output
+        - code: code
+          code_error: code_error
+          message: message
+          plan: plan
+          code_output: code_output
+        modified_artifacts:
+        - identifier: identifier
+          artifact_type: text
+          data: data
+          title: title
+        - identifier: identifier
+          artifact_type: text
+          data: data
+          title: title
+      properties:
+        assistant_actions:
+          items:
+            $ref: '#/components/schemas/AssistantAction'
+          type: array
+        modified_artifacts:
+          description: List of artifacts created or updated in this request. May contain
+            duplicate artifact identifiers.
+          items:
+            $ref: '#/components/schemas/ExecuteRequest_artifacts_inner'
+          type: array
+      required:
+      - assistant_actions
+      - modified_artifacts
+      title: QueryResponse
+    TableArtifact:
+      properties:
+        identifier:
+          title: Identifier
+          type: string
+        title:
+          title: Title
+          type: string
+        artifact_type:
+          enum:
+          - table
+          title: Artifact Type
+          type: string
+        data:
+          description: "Table data as a list of objects, with the object keys being\
+            \ column names"
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+      required:
+      - artifact_type
+      - data
+      - identifier
+      - title
+      title: TableArtifact
+    TextArtifact:
+      example:
+        identifier: identifier
+        artifact_type: text
+        data: data
+        title: title
+      properties:
+        identifier:
+          title: Identifier
+          type: string
+        title:
+          title: Title
+          type: string
+        artifact_type:
+          enum:
+          - text
+          title: Artifact Type
+          type: string
+        data:
+          title: Data
+          type: string
+      required:
+      - artifact_type
+      - data
+      - identifier
+      - title
+      title: TextArtifact
+    UserMessage:
+      example:
+        text: text
+      properties:
+        text:
+          title: Text
+          type: string
+      required:
+      - text
+      title: UserMessage
+    ValidationError:
+      example:
+        msg: msg
+        loc:
+        - ValidationError_loc_inner
+        - ValidationError_loc_inner
+        type: type
+      properties:
+        loc:
+          items:
+            $ref: '#/components/schemas/ValidationError_loc_inner'
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    VisualizationArtifact:
+      properties:
+        identifier:
+          title: Identifier
+          type: string
+        title:
+          title: Title
+          type: string
+        artifact_type:
+          enum:
+          - visualization
+          title: Artifact Type
+          type: string
+        data:
+          $ref: '#/components/schemas/VisualizationArtifactData'
+      required:
+      - artifact_type
+      - data
+      - identifier
+      - title
+      title: VisualizationArtifact
+    VisualizationArtifactData:
+      description: |-
+        Data structure for visualization artifacts containing HTML and associated data.
+
+        Attributes:
+            html: The HTML markup for rendering the visualization
+            visualization_data: The underlying data used to generate the visualization
+      properties:
+        html:
+          title: Html
+          type: string
+        visualization_data: {}
+      required:
+      - html
+      - visualization_data
+      title: VisualizationArtifactData
+    QueryResponseChunk:
+      discriminator:
+        mapping:
+          artifact_update_chunk: '#/components/schemas/ArtifactUpdateChunk'
+          assistant_action_chunk: '#/components/schemas/AssistantActionChunk'
+          error_chunk: '#/components/schemas/ErrorChunk'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/AssistantActionChunk'
+      - $ref: '#/components/schemas/ArtifactUpdateChunk'
+      - $ref: '#/components/schemas/ErrorChunk'
+    ArtifactUpdateChunk:
+      properties:
+        type:
+          enum:
+          - artifact_update_chunk
+          title: Type
+          type: string
+        artifact:
+          $ref: '#/components/schemas/Artifact'
+      required:
+      - artifact
+      - type
+      title: ArtifactUpdateChunk
+    AssistantActionChunk:
+      properties:
+        message:
+          nullable: true
+          type: string
+        plan:
+          nullable: true
+          type: string
+        code:
+          nullable: true
+          type: string
+        code_output:
+          nullable: true
+          type: string
+        code_error:
+          nullable: true
+          type: string
+        type:
+          enum:
+          - assistant_action_chunk
+          title: Type
+          type: string
+        index:
+          title: Index
+          type: integer
+      required:
+      - index
+      - type
+      title: AssistantActionChunk
+    ErrorChunk:
+      properties:
+        type:
+          enum:
+          - error_chunk
+          title: Type
+          type: string
+        error:
+          title: Error
+          type: string
+      required:
+      - error
+      - type
+      title: ErrorChunk
+    ExecuteRequest_ai_primitives_llm:
+      discriminator:
+        mapping:
+          anthropic: '#/components/schemas/ApiAnthropicConfig'
+          hasura: '#/components/schemas/HasuraLlmConfig'
+          openai: '#/components/schemas/ApiOpenAIConfig'
+        propertyName: provider
+      nullable: true
+      oneOf:
+      - $ref: '#/components/schemas/HasuraLlmConfig'
+      - $ref: '#/components/schemas/ApiOpenAIConfig'
+      - $ref: '#/components/schemas/ApiAnthropicConfig'
+    ExecuteRequest_artifacts_inner:
+      discriminator:
+        mapping:
+          table: '#/components/schemas/TableArtifact'
+          text: '#/components/schemas/TextArtifact'
+          visualization: '#/components/schemas/VisualizationArtifact'
+        propertyName: artifact_type
+      oneOf:
+      - $ref: '#/components/schemas/TextArtifact'
+      - $ref: '#/components/schemas/TableArtifact'
+      - $ref: '#/components/schemas/VisualizationArtifact'
+    Llm:
+      discriminator:
+        mapping:
+          anthropic: '#/components/schemas/ApiAnthropicConfig'
+          hasura: '#/components/schemas/HasuraLlmConfig'
+          openai: '#/components/schemas/ApiOpenAIConfig'
+        propertyName: provider
+      oneOf:
+      - $ref: '#/components/schemas/HasuraLlmConfig'
+      - $ref: '#/components/schemas/ApiOpenAIConfig'
+      - $ref: '#/components/schemas/ApiAnthropicConfig'
+      title: Llm
+    ValidationError_loc_inner:
+      anyOf:
+      - type: string
+      - type: integer
+    Artifact:
+      discriminator:
+        mapping:
+          table: '#/components/schemas/TableArtifact'
+          text: '#/components/schemas/TextArtifact'
+          visualization: '#/components/schemas/VisualizationArtifact'
+        propertyName: artifact_type
+      oneOf:
+      - $ref: '#/components/schemas/TextArtifact'
+      - $ref: '#/components/schemas/TableArtifact'
+      - $ref: '#/components/schemas/VisualizationArtifact'
+      title: Artifact
+  securitySchemes:
+    HTTPBearer:
+      scheme: bearer
+      type: http
