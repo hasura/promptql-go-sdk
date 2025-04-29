@@ -123,7 +123,9 @@ func (qc QueryChunks) AsQueryResponse() api.QueryResponse {
 	}
 }
 
-func (qc *QueryChunks) mergeArtifact(src, target api.ExecuteRequestArtifactsInner) *api.ExecuteRequestArtifactsInner {
+func (qc *QueryChunks) mergeArtifact(
+	src, target api.ExecuteRequestArtifactsInner,
+) *api.ExecuteRequestArtifactsInner {
 	switch ta := target.Interface().(type) {
 	case *api.TableArtifact:
 		sa := src.AsTable()

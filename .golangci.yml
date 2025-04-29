@@ -87,6 +87,7 @@ formatters:
     - golines
   # Formatters settings.
   settings: {}
+
   exclusions:
     # Mode of the generated files analysis.
     #

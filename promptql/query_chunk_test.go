@@ -40,11 +40,13 @@ func TestQueryChunks(t *testing.T) {
 
 	expected := promptql.NewQueryChunks()
 	expected.SetModifiedArtifacts([]api.ExecuteRequestArtifactsInner{
-		api.TableArtifactAsExecuteRequestArtifactsInner(promptql.NewTableArtifact("customer_list", "List of Customers", []map[string]any{
-			{"id": float64(3), "name": "Jerry"},
-			{"id": float64(1), "name": "John"},
-			{"id": float64(2), "name": "Tom"},
-		})),
+		api.TableArtifactAsExecuteRequestArtifactsInner(
+			promptql.NewTableArtifact("customer_list", "List of Customers", []map[string]any{
+				{"id": float64(3), "name": "Jerry"},
+				{"id": float64(1), "name": "John"},
+				{"id": float64(2), "name": "Tom"},
+			}),
+		),
 	})
 	expected.SetAssistantActions([]api.AssistantAction{
 		{
@@ -76,6 +78,16 @@ func TestQueryChunks(t *testing.T) {
 		}
 	}
 
-	assertDeepEqual(t, expected.AsQueryResponse(), result.AsQueryResponse(), "query response do not equal")
-	assertDeepEqual(t, expected.GetErrorChunk(), result.GetErrorChunk(), "error chunk does not equal")
+	assertDeepEqual(
+		t,
+		expected.AsQueryResponse(),
+		result.AsQueryResponse(),
+		"query response do not equal",
+	)
+	assertDeepEqual(
+		t,
+		expected.GetErrorChunk(),
+		result.GetErrorChunk(),
+		"error chunk does not equal",
+	)
 }
