@@ -11,6 +11,7 @@ linters:
     - varnamelen
     - mnd
     - gochecknoglobals
+    - recvcheck
   settings:
     lll:
       # Max line length, lines longer will be reported.
@@ -50,6 +51,7 @@ linters:
       # If lower than 0, disable the check.
       # Default: 40
       statements: 60
+
 
   # Defines a set of rules to ignore issues.
   # It does not skip the analysis, and so does not ignore "typecheck" errors.

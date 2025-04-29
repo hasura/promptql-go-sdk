@@ -27,23 +27,22 @@ import (
 )
 
 func main() {
-
-	client, err := promptql.NewClient("<promptql-api-key>", &promptql.ClientConfig{
-		DdnBaseURL: "https://your-ddn-project",
-		DdnHeaders: map[string]string{
+    client, err := promptql.NewClient("<promptql-api-key>", &promptql.ClientConfig{
+        DdnBaseURL: "https://your-ddn-project",
+        DdnHeaders: map[string]string{
             // authorization headers to your ddn project
-			// "Authorization": "access-token",
+            // "Authorization": "access-token",
         },
-	})
+    })
 
-	if err != nil {
-		t.Fatalf("failed to create client: %s", err)
-	}
+    if err != nil {
+        t.Fatalf("failed to create client: %s", err)
+    }
 
-	result, err := client.Query(context.Background(), promptql.NewQueryRequestMessage("what can you do?"))
-	if err != nil {
-		panic(err)
-	}
+    result, err := client.Query(context.Background(), promptql.NewQueryRequestMessage("what can you do?"))
+    if err != nil {
+        panic(err)
+    }
 
     if len(result.AssistantActions) > 0 {
         if msg := result.AssistantActions[0].Message.Get(); msg != nil {
@@ -85,8 +84,8 @@ err := client.QueryStream(
     func(chunk api.QueryResponseChunk) error {
         log.Println(chunk
         
-		return nil
-	},
+        return nil
+    },
 )
 ```
 

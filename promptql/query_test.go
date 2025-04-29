@@ -128,6 +128,10 @@ func assertTableArtifacts(t *testing.T, expected, results []api.ExecuteRequestAr
 func assertDeepEqual(t *testing.T, expected, result any, message string) {
 	t.Helper()
 
+	if api.IsNil(expected) && api.IsNil(result) {
+		return
+	}
+
 	if !reflect.DeepEqual(expected, result) {
 		eb, _ := json.Marshal(expected)
 		ab, _ := json.Marshal(result)

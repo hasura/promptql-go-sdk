@@ -1,37 +1,76 @@
 package promptql
 
 import (
+	"slices"
+
 	"github.com/hasura/promptql-go-sdk/api"
 )
 
 // QueryChunks are a convenient data type to help us join query response chunks together.
 type QueryChunks struct {
-	ArtifactUpdateChunks  map[string]api.ArtifactUpdateChunk
-	AssistantActionChunks []api.AssistantActionChunk
-	ErrorChunk            *api.ErrorChunk
+	assistantActions  []api.AssistantAction
+	modifiedArtifacts map[string]api.ExecuteRequestArtifactsInner
+	errorChunk        *api.ErrorChunk
+
+	// cache the sorted list of artifacts for the consistent order
+	modifiedArtifactKeys []string
 }
 
 // NewQueryChunks create an empty QueryChunks instance.
 func NewQueryChunks() *QueryChunks {
 	return &QueryChunks{
-		ArtifactUpdateChunks: make(map[string]api.ArtifactUpdateChunk),
+		modifiedArtifacts: make(map[string]api.ExecuteRequestArtifactsInner),
 	}
 }
 
-// GetArtifactUpdateChunks return the artifact update chunks as a slice.
-func (qc *QueryChunks) GetArtifactUpdateChunks() []api.ArtifactUpdateChunk {
-	results := make([]api.ArtifactUpdateChunk, 0, len(qc.ArtifactUpdateChunks))
+// GetModifiedArtifacts return a list of artifacts.
+func (qc QueryChunks) GetModifiedArtifacts() []api.ExecuteRequestArtifactsInner {
+	results := make([]api.ExecuteRequestArtifactsInner, len(qc.modifiedArtifacts))
 
-	for _, item := range qc.ArtifactUpdateChunks {
-		results = append(results, item)
+	for i, key := range qc.modifiedArtifactKeys {
+		results[i] = qc.modifiedArtifacts[key]
 	}
 
 	return results
 }
 
+// SetModifiedArtifacts set modified artifacts.
+func (qc *QueryChunks) SetModifiedArtifacts(inputs []api.ExecuteRequestArtifactsInner) {
+	qc.modifiedArtifacts = make(map[string]api.ExecuteRequestArtifactsInner)
+	qc.modifiedArtifactKeys = make([]string, len(inputs))
+
+	for i, artifact := range inputs {
+		key := buildArtifactKey(api.Artifact(artifact))
+		qc.modifiedArtifacts[key] = artifact
+		qc.modifiedArtifactKeys[i] = key
+	}
+
+	slices.Sort(qc.modifiedArtifactKeys)
+}
+
+// GetAssistantActions return a list of assistant actions.
+func (qc QueryChunks) GetAssistantActions() []api.AssistantAction {
+	return qc.assistantActions
+}
+
+// SetAssistantActions set assistant actions.
+func (qc *QueryChunks) SetAssistantActions(inputs []api.AssistantAction) {
+	qc.assistantActions = inputs
+}
+
+// GetErrorChunk returns a nullable error chunk.
+func (qc QueryChunks) GetErrorChunk() *api.ErrorChunk {
+	return qc.errorChunk
+}
+
+// SetErrorChunk set the error chunk.
+func (qc *QueryChunks) SetErrorChunk(input *api.ErrorChunk) {
+	qc.errorChunk = input
+}
+
 // IsError checks if the chunk is an error.
-func (qc *QueryChunks) IsError() bool {
-	return qc.ErrorChunk != nil
+func (qc QueryChunks) IsError() bool {
+	return qc.errorChunk != nil
 }
 
 // Add or merge the response chunk into the chunks list.
@@ -46,54 +85,62 @@ func (qc *QueryChunks) Add(chunk api.QueryResponseChunk) error {
 			return nil
 		}
 
-		identifier := chk.Artifact.GetIdentifier()
-		key := chk.Type + ":" + identifier
+		key := buildArtifactKey(chk.Artifact)
 
-		if qc.ArtifactUpdateChunks == nil {
-			qc.ArtifactUpdateChunks = make(map[string]api.ArtifactUpdateChunk)
+		if qc.modifiedArtifacts == nil {
+			qc.modifiedArtifacts = make(map[string]api.ExecuteRequestArtifactsInner)
 		}
 
-		artifact, ok := qc.ArtifactUpdateChunks[key]
+		artifact, ok := qc.modifiedArtifacts[key]
 		if ok {
-			mergedArtifact := qc.mergeArtifact(artifact.Artifact, chk.Artifact)
+			mergedArtifact := qc.mergeArtifact(artifact, api.ExecuteRequestArtifactsInner(chk.Artifact))
 			if mergedArtifact != nil {
-				artifact.Artifact = *mergedArtifact
-				qc.ArtifactUpdateChunks[key] = artifact
+				qc.modifiedArtifacts[key] = *mergedArtifact
 			}
 		} else {
-			qc.ArtifactUpdateChunks[key] = *chk
+			qc.modifiedArtifactKeys = append(qc.modifiedArtifactKeys, key)
+			slices.Sort(qc.modifiedArtifactKeys)
+			qc.modifiedArtifacts[key] = api.ExecuteRequestArtifactsInner(chk.Artifact)
 		}
 	case *api.AssistantActionChunk:
 		qc.mergeAssistantActionChunk(chk)
 	case *api.ErrorChunk:
-		if qc.ErrorChunk == nil {
-			qc.ErrorChunk = chk
+		if qc.errorChunk == nil {
+			qc.errorChunk = chk
 		} else {
-			qc.ErrorChunk.Error += chk.Error
+			qc.errorChunk.Error += chk.Error
 		}
 	}
 
 	return nil
 }
 
-func (qc *QueryChunks) mergeArtifact(src, target api.Artifact) *api.Artifact {
+// AsQueryResponse converts to a QueryResponse instance.
+func (qc QueryChunks) AsQueryResponse() api.QueryResponse {
+	return api.QueryResponse{
+		AssistantActions:  qc.GetAssistantActions(),
+		ModifiedArtifacts: qc.GetModifiedArtifacts(),
+	}
+}
+
+func (qc *QueryChunks) mergeArtifact(src, target api.ExecuteRequestArtifactsInner) *api.ExecuteRequestArtifactsInner {
 	switch ta := target.Interface().(type) {
 	case *api.TableArtifact:
 		sa := src.AsTable()
 		sa.Data = append(sa.Data, ta.Data...)
-		result := api.TableArtifactAsArtifact(sa)
+		result := api.TableArtifactAsExecuteRequestArtifactsInner(sa)
 
 		return &result
 	case *api.TextArtifact:
 		sa := src.AsText()
 		sa.Data += ta.Data
-		result := api.TextArtifactAsArtifact(sa)
+		result := api.TextArtifactAsExecuteRequestArtifactsInner(sa)
 
 		return &result
 	case *api.VisualizationArtifact:
 		sa := src.AsVisualization()
 		sa.Data.Html += ta.Data.Html
-		result := api.VisualizationArtifactAsArtifact(sa)
+		result := api.VisualizationArtifactAsExecuteRequestArtifactsInner(sa)
 
 		return &result
 	default:
@@ -107,21 +154,21 @@ func (qc *QueryChunks) mergeAssistantActionChunk(chk *api.AssistantActionChunk) 
 	}
 
 	chunkIndex := int(chk.Index)
-	for i := len(qc.AssistantActionChunks); i <= chunkIndex; i++ {
-		qc.AssistantActionChunks = append(
-			qc.AssistantActionChunks,
-			*NewAssistantActionChunk(int32(i)),
+	for i := len(qc.assistantActions); i <= chunkIndex; i++ {
+		qc.assistantActions = append(
+			qc.assistantActions,
+			*api.NewAssistantAction(),
 		)
 	}
 
-	src := qc.AssistantActionChunks[chunkIndex]
+	src := qc.assistantActions[chunkIndex]
 	src.Code = concatNullableString(src.Code, chk.Code)
 	src.Message = concatNullableString(src.Message, chk.Message)
 	src.Plan = concatNullableString(src.Plan, chk.Plan)
 	src.CodeOutput = concatNullableString(src.CodeOutput, chk.CodeOutput)
 	src.CodeError = concatNullableString(src.CodeError, chk.CodeError)
 
-	qc.AssistantActionChunks[chunkIndex] = src
+	qc.assistantActions[chunkIndex] = src
 }
 
 // will change when the set of required properties is changed.
@@ -146,4 +193,10 @@ func NewArtifactUpdateChunk[A api.ArtifactInterface](artifact A) *api.ArtifactUp
 		Type:     string(api.QueryResponseTypeArtifactUpdateChunk),
 		Artifact: api.NewArtifact(artifact),
 	}
+}
+
+func buildArtifactKey(artifact api.Artifact) string {
+	identifier := artifact.GetIdentifier()
+
+	return string(artifact.GetArtifactType()) + ":" + identifier
 }

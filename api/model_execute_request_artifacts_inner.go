@@ -46,6 +46,24 @@ func (src ExecuteRequestArtifactsInner) MarshalJSON() ([]byte, error) {
 	return json.Marshal(Artifact(src))
 }
 
+// GetArtifactType returns the artifact type of the underlying type.
+func (src ExecuteRequestArtifactsInner) GetArtifactType() ArtifactType {
+	if src.IsNil() {
+		return ""
+	}
+
+	return ArtifactType(src.inner.GetArtifactType())
+}
+
+// GetIdentifier returns the identifier of the underlying type.
+func (src ExecuteRequestArtifactsInner) GetIdentifier() string {
+	if src.IsNil() {
+		return ""
+	}
+
+	return src.inner.GetIdentifier()
+}
+
 // IsNil checks if the instance is empty.
 func (src ExecuteRequestArtifactsInner) IsNil() bool {
 	return src.inner == nil
