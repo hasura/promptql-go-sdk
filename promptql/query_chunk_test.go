@@ -2,7 +2,6 @@ package promptql_test
 
 import (
 	"encoding/json"
-	"reflect"
 	"testing"
 
 	"github.com/hasura/promptql-go-sdk/api"
@@ -39,39 +38,33 @@ func TestQueryChunks(t *testing.T) {
 		"{\"message\":\" full data so I must not make up observations' />\",\"plan\":null,\"code\":null,\"code_output\":null,\"code_error\":null,\"type\":\"assistant_action_chunk\",\"index\":1}",
 	}
 
-	expected := promptql.QueryChunks{
-		ArtifactUpdateChunks: map[string]api.ArtifactUpdateChunk{
-			"artifact_update_chunk:customer_list": {
-				Type: string(api.QueryResponseTypeArtifactUpdateChunk),
-				Artifact: api.TableArtifactAsArtifact(promptql.NewTableArtifact("customer_list", "List of Customers", []map[string]any{
-					{"id": float64(3), "name": "Jerry"},
-					{"id": float64(1), "name": "John"},
-					{"id": float64(2), "name": "Tom"},
-				})),
-			},
+	expected := promptql.NewQueryChunks()
+	expected.SetModifiedArtifacts([]api.ExecuteRequestArtifactsInner{
+		api.TableArtifactAsExecuteRequestArtifactsInner(
+			promptql.NewTableArtifact("customer_list", "List of Customers", []map[string]any{
+				{"id": float64(3), "name": "Jerry"},
+				{"id": float64(1), "name": "John"},
+				{"id": float64(2), "name": "Tom"},
+			}),
+		),
+	})
+	expected.SetAssistantActions([]api.AssistantAction{
+		{
+			Code:       *api.NewNullableString(api.PtrString("sql = \"\"\"\nSELECT id, name \nFROM customers()\nORDER BY name\n\"\"\"\n\ncustomers = executor.run_sql(sql)\n\nif len(customers) == 0:\n    executor.print(\"No customers found.\")\nelse:\n    executor.store_artifact(\n        'customer_list',\n        'List of Customers',\n        'table',\n        customers\n    )")),
+			CodeOutput: *api.NewNullableString(api.PtrString("SQL statement returned 3 rows. Sample rows: [{'id': 3.0, 'name': 'Jerry'}, {'id': 1.0, 'name': 'John'}]\nStored table artifact: identifier = 'customer_list', title = 'List of Customers', number of rows = 3, sample rows preview = [{'id': 3, 'name': 'Jerry'}, {'id': 1, 'name': 'John'}]\n")),
+			CodeError:  *api.NewNullableString(nil),
+			Message:    *api.NewNullableString(api.PtrString("I'll retrieve the list of customers for you.")),
+			Plan:       *api.NewNullableString(api.PtrString("1. Query the customers function to get the list of all customers\n2. Store the results in a table artifact showing customer IDs and names")),
 		},
-		AssistantActionChunks: []api.AssistantActionChunk{
-			{
-				Type:       string(api.QueryResponseTypeAssistantActionChunk),
-				Code:       *api.NewNullableString(api.PtrString("sql = \"\"\"\nSELECT id, name \nFROM customers()\nORDER BY name\n\"\"\"\n\ncustomers = executor.run_sql(sql)\n\nif len(customers) == 0:\n    executor.print(\"No customers found.\")\nelse:\n    executor.store_artifact(\n        'customer_list',\n        'List of Customers',\n        'table',\n        customers\n    )")),
-				CodeOutput: *api.NewNullableString(api.PtrString("SQL statement returned 3 rows. Sample rows: [{'id': 3.0, 'name': 'Jerry'}, {'id': 1.0, 'name': 'John'}]\nStored table artifact: identifier = 'customer_list', title = 'List of Customers', number of rows = 3, sample rows preview = [{'id': 3, 'name': 'Jerry'}, {'id': 1, 'name': 'John'}]\n")),
-				CodeError:  *api.NewNullableString(nil),
-				Index:      0,
-				Message:    *api.NewNullableString(api.PtrString("I'll retrieve the list of customers for you.")),
-				Plan:       *api.NewNullableString(api.PtrString("1. Query the customers function to get the list of all customers\n2. Store the results in a table artifact showing customer IDs and names")),
-			},
-			{
-				Type:       string(api.QueryResponseTypeAssistantActionChunk),
-				Index:      1,
-				Message:    *api.NewNullableString(api.PtrString("Here are all the customers:\n\u003cartifact identifier='customer_list' warning='I cannot see the full data so I must not make up observations' /\u003e")),
-				Plan:       *api.NewNullableString(nil),
-				Code:       *api.NewNullableString(nil),
-				CodeOutput: *api.NewNullableString(nil),
-				CodeError:  *api.NewNullableString(nil),
-			},
+		{
+			Message:    *api.NewNullableString(api.PtrString("Here are all the customers:\n\u003cartifact identifier='customer_list' warning='I cannot see the full data so I must not make up observations' /\u003e")),
+			Plan:       *api.NewNullableString(nil),
+			Code:       *api.NewNullableString(nil),
+			CodeOutput: *api.NewNullableString(nil),
+			CodeError:  *api.NewNullableString(nil),
 		},
-		ErrorChunk: nil,
-	}
+	})
+
 	result := promptql.NewQueryChunks()
 
 	for _, text := range fixtures {
@@ -85,7 +78,16 @@ func TestQueryChunks(t *testing.T) {
 		}
 	}
 
-	if !reflect.DeepEqual(expected, *result) {
-		assertDeepEqual(t, expected, *result, "not equal")
-	}
+	assertDeepEqual(
+		t,
+		expected.AsQueryResponse(),
+		result.AsQueryResponse(),
+		"query response do not equal",
+	)
+	assertDeepEqual(
+		t,
+		expected.GetErrorChunk(),
+		result.GetErrorChunk(),
+		"error chunk does not equal",
+	)
 }

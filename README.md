@@ -21,29 +21,27 @@ go get github.com/hasura/promptql-go-sdk
 Create the PromptQL client with required configurations:
 
 ```go
-
 import (
     "github.com/hasura/promptql-go-sdk/promptql"
 )
 
 func main() {
-
-	client, err := promptql.NewClient("<promptql-api-key>", &promptql.ClientConfig{
-		DdnBaseURL: "https://your-ddn-project",
-		DdnHeaders: map[string]string{
+    client, err := promptql.NewClient("<promptql-api-key>", &promptql.ClientConfig{
+        DdnBaseURL: "https://your-ddn-project",
+        DdnHeaders: map[string]string{
             // authorization headers to your ddn project
-			// "Authorization": "access-token",
+            // "Authorization": "access-token",
         },
-	})
+    })
 
-	if err != nil {
-		t.Fatalf("failed to create client: %s", err)
-	}
+    if err != nil {
+        t.Fatalf("failed to create client: %s", err)
+    }
 
-	result, err := client.Query(context.Background(), promptql.NewQueryRequestMessage("what can you do?"))
-	if err != nil {
-		panic(err)
-	}
+    result, err := client.Query(context.Background(), promptql.NewQueryRequestMessage("what can you do?"))
+    if err != nil {
+        panic(err)
+    }
 
     if len(result.AssistantActions) > 0 {
         if msg := result.AssistantActions[0].Message.Get(); msg != nil {
@@ -76,18 +74,38 @@ If the callback isn't set the client returns the raw response and you need to ha
 func (c *Client) QueryStream(ctx context.Context, body api.QueryRequest, callback QueryStreamCallback) error
 ```
 
+The library supports a `QueryChunks` struct to help you combine chunks into a query response.
+
 Example:
 
 ```go
+chunks := promptql.NewQueryChunks()
+
 err := client.QueryStream(
     context.Background(), 
     promptql.NewQueryRequestMessage("get list customers"), 
     func(chunk api.QueryResponseChunk) error {
-        log.Println(chunk
+        log.Println(chunk)
+
+        if err := chunks.Add(chunk); err != nil {
+            log.Println("failed to add chunk:", err)
+        }
         
-		return nil
-	},
+        return nil
+    },
 )
+
+if err != nil {
+    panic(err)
+}
+
+if chunks.IsError() {
+    log.Println("error": chunks.GetErrorChunk().Error)
+} else if len(result.AssistantActions) > 0 {
+    if msg := result.AssistantActions[0].Message.Get(); msg != nil {
+        log.Println(msg)
+    }
+}
 ```
 
 ### Execute Program

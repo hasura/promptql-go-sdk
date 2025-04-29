@@ -1,3 +1,4 @@
 # Ignore env and test outputs
 .env
 *.out
+*.tmp

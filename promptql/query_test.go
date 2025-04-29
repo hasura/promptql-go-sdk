@@ -18,7 +18,10 @@ import (
 func TestQueryAndExecuteProgram(t *testing.T) {
 	client := createTestClient(t)
 
-	result, err := client.Query(context.Background(), promptql.NewQueryRequestMessage("get list customers"))
+	result, err := client.Query(
+		context.Background(),
+		promptql.NewQueryRequestMessage("get list customers"),
+	)
 	if err != nil {
 		t.Fatalf("expected non-error, got: %s", err)
 	}
@@ -65,7 +68,10 @@ func TestQueryAndExecuteProgram(t *testing.T) {
 		t.Fatal("expected at least 1 action that contains code")
 	}
 
-	execResult, err := client.ExecuteProgram(context.Background(), promptql.NewExecuteProgramRequest(code))
+	execResult, err := client.ExecuteProgram(
+		context.Background(),
+		promptql.NewExecuteProgramRequest(code),
+	)
 	if err != nil {
 		t.Fatalf("expected non-error, got: %s", err)
 	}
@@ -76,9 +82,13 @@ func TestQueryAndExecuteProgram(t *testing.T) {
 func TestQueryStream(t *testing.T) {
 	client := createTestClient(t)
 
-	err := client.QueryStream(context.Background(), promptql.NewQueryRequestMessage("get list customers"), func(chunk api.QueryResponseChunk) error {
-		return nil
-	})
+	err := client.QueryStream(
+		context.Background(),
+		promptql.NewQueryRequestMessage("get list customers"),
+		func(chunk api.QueryResponseChunk) error {
+			return nil
+		},
+	)
 	if err != nil {
 		t.Fatalf("expected non-error, got: %s", err)
 	}
@@ -99,7 +109,6 @@ func createTestClient(t *testing.T) *promptql.Client {
 			Level: slog.LevelInfo,
 		})),
 	})
-
 	if err != nil {
 		t.Fatalf("failed to create client: %s", err)
 	}
@@ -127,6 +136,10 @@ func assertTableArtifacts(t *testing.T, expected, results []api.ExecuteRequestAr
 
 func assertDeepEqual(t *testing.T, expected, result any, message string) {
 	t.Helper()
+
+	if api.IsNil(expected) && api.IsNil(result) {
+		return
+	}
 
 	if !reflect.DeepEqual(expected, result) {
 		eb, _ := json.Marshal(expected)
