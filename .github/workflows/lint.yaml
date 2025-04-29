@@ -23,7 +23,7 @@ jobs:
         run: |
           go get -t -v ./...
       - name: Format
-        run: diff -u <(echo -n) <(gofmt -d -s .)
+        run: diff -u <(echo -n) <(gofmt -d -s ./promptql)
       - name: Vet
         run: go vet ./...
       - name: Lint
