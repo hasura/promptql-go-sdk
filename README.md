@@ -12,8 +12,8 @@ go get github.com/hasura/promptql-go-sdk
 
 ### Prerequisite
 
-- If you are new with PromptQL, follow [the quickstart guide of PromptQL](https://hasura.io/docs/promptql/quickstart/) to create a project.
-- Create a PromptQL API Key in project settings tab on [https://console.hasura.io](https://console.hasura.io).
+- If you are new to PromptQL, follow [the quickstart guide of PromptQL](https://hasura.io/docs/promptql/quickstart/) to create a project.
+- Create a PromptQL API Key in the project settings tab on [https://console.hasura.io](https://console.hasura.io).
 - Your Project API endpoint and security headers.
 
 ### Use PromptQL SDK
