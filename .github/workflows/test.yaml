@@ -3,6 +3,11 @@ name: Tests
 on:
   workflow_call:
   pull_request:
+    paths:
+      - "**.go"
+      - "go.mod"
+      - "go.sum"
+      - ".github/workflows/*.yaml"
   push:
     branches:
       - "main"
