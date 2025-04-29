@@ -1,6 +1,6 @@
 # PromptQL Go SDK
 
-A Go SDK for interacting with the [PromptQL Natural Language API](https://hasura.io/docs/promptql/promptql-apis/natural-language-api/).
+A Go SDK for interacting with the [PromptQL APIs](https://hasura.io/docs/promptql/promptql-apis/overview/).
 
 ## Installation
 
@@ -12,8 +12,8 @@ go get github.com/hasura/promptql-go-sdk
 
 ### Prerequisite
 
-- If you are new with PromptQL, follow [the quickstart guide of PromptQL](https://hasura.io/docs/promptql/quickstart/) to create a project.
-- Create a PromptQL API Key in project settings tab on [https://console.hasura.io](https://console.hasura.io).
+- If you are new to PromptQL, follow [the quickstart guide of PromptQL](https://hasura.io/docs/promptql/quickstart/) to create a project.
+- Create a PromptQL API Key in the project settings tab on [https://console.hasura.io](https://console.hasura.io).
 - Your Project API endpoint and security headers.
 
 ### Use PromptQL SDK
@@ -35,10 +35,13 @@ func main() {
     })
 
     if err != nil {
-        t.Fatalf("failed to create client: %s", err)
+        log.Fatalf("failed to create client: %s", err)
     }
 
-    result, err := client.Query(context.Background(), promptql.NewQueryRequestMessage("what can you do?"))
+    result, err := client.Query(
+        context.Background(), 
+        promptql.NewQueryRequestMessage("what can you do?"),
+    )
     if err != nil {
         panic(err)
     }
@@ -120,7 +123,7 @@ func (c *Client) ExecuteProgram(ctx context.Context, body api.ExecuteRequest) (*
 
 ### Generate codes
 
-Use the following command to update Go types of PromptQL APIs from OpenAPI document.
+Use the following command to update Go types of PromptQL APIs from the OpenAPI document.
 
 ```bash
 make openapi-gen
