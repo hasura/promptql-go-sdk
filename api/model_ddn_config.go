@@ -145,7 +145,6 @@ func (o *DdnConfig) UnmarshalJSON(data []byte) (err error) {
 	varDdnConfig := _DdnConfig{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varDdnConfig)
 
 	if err != nil {
@@ -192,5 +191,4 @@ func (v *NullableDdnConfig) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
 

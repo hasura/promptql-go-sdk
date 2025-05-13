@@ -3,6 +3,7 @@ module github.com/hasura/promptql-go-sdk
 go 1.23
 
 require (
+	github.com/google/uuid v1.6.0
 	github.com/tmaxmax/go-sse v0.10.0
 	go.opentelemetry.io/otel v1.35.0
 	go.opentelemetry.io/otel/trace v1.35.0

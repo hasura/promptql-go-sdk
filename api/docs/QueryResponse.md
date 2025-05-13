@@ -4,14 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**AssistantActions** | [**[]AssistantAction**](AssistantAction.md) |  | 
+**ThreadId** | **string** |  | 
+**AssistantActions** | [**[]ApiThreadAssistantAction**](ApiThreadAssistantAction.md) |  | 
 **ModifiedArtifacts** | [**[]ExecuteRequestArtifactsInner**](ExecuteRequestArtifactsInner.md) | List of artifacts created or updated in this request. May contain duplicate artifact identifiers. | 
 
 ## Methods
 
 ### NewQueryResponse
 
-`func NewQueryResponse(assistantActions []AssistantAction, modifiedArtifacts []ExecuteRequestArtifactsInner, ) *QueryResponse`
+`func NewQueryResponse(threadId string, assistantActions []ApiThreadAssistantAction, modifiedArtifacts []ExecuteRequestArtifactsInner, ) *QueryResponse`
 
 NewQueryResponse instantiates a new QueryResponse object
 This constructor will assign default values to properties that have it defined,
@@ -26,22 +27,42 @@ NewQueryResponseWithDefaults instantiates a new QueryResponse object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
+### GetThreadId
+
+`func (o *QueryResponse) GetThreadId() string`
+
+GetThreadId returns the ThreadId field if non-nil, zero value otherwise.
+
+### GetThreadIdOk
+
+`func (o *QueryResponse) GetThreadIdOk() (*string, bool)`
+
+GetThreadIdOk returns a tuple with the ThreadId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetThreadId
+
+`func (o *QueryResponse) SetThreadId(v string)`
+
+SetThreadId sets ThreadId field to given value.
+
+
 ### GetAssistantActions
 
-`func (o *QueryResponse) GetAssistantActions() []AssistantAction`
+`func (o *QueryResponse) GetAssistantActions() []ApiThreadAssistantAction`
 
 GetAssistantActions returns the AssistantActions field if non-nil, zero value otherwise.
 
 ### GetAssistantActionsOk
 
-`func (o *QueryResponse) GetAssistantActionsOk() (*[]AssistantAction, bool)`
+`func (o *QueryResponse) GetAssistantActionsOk() (*[]ApiThreadAssistantAction, bool)`
 
 GetAssistantActionsOk returns a tuple with the AssistantActions field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetAssistantActions
 
-`func (o *QueryResponse) SetAssistantActions(v []AssistantAction)`
+`func (o *QueryResponse) SetAssistantActions(v []ApiThreadAssistantAction)`
 
 SetAssistantActions sets AssistantActions field to given value.
 

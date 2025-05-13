@@ -16,39 +16,39 @@ import (
 	"fmt"
 )
 
-// checks if the Interaction type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &Interaction{}
+// checks if the ApiThreadInteraction type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ApiThreadInteraction{}
 
-// Interaction struct for Interaction
-type Interaction struct {
-	UserMessage UserMessage `json:"user_message"`
-	AssistantActions []AssistantAction `json:"assistant_actions,omitempty"`
+// ApiThreadInteraction struct for ApiThreadInteraction
+type ApiThreadInteraction struct {
+	UserMessage ApiThreadUserMessage `json:"user_message"`
+	AssistantActions []ApiThreadAssistantAction `json:"assistant_actions,omitempty"`
 }
 
-type _Interaction Interaction
+type _ApiThreadInteraction ApiThreadInteraction
 
-// NewInteraction instantiates a new Interaction object
+// NewApiThreadInteraction instantiates a new ApiThreadInteraction object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewInteraction(userMessage UserMessage) *Interaction {
-	this := Interaction{}
+func NewApiThreadInteraction(userMessage ApiThreadUserMessage) *ApiThreadInteraction {
+	this := ApiThreadInteraction{}
 	this.UserMessage = userMessage
 	return &this
 }
 
-// NewInteractionWithDefaults instantiates a new Interaction object
+// NewApiThreadInteractionWithDefaults instantiates a new ApiThreadInteraction object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewInteractionWithDefaults() *Interaction {
-	this := Interaction{}
+func NewApiThreadInteractionWithDefaults() *ApiThreadInteraction {
+	this := ApiThreadInteraction{}
 	return &this
 }
 
 // GetUserMessage returns the UserMessage field value
-func (o *Interaction) GetUserMessage() UserMessage {
+func (o *ApiThreadInteraction) GetUserMessage() ApiThreadUserMessage {
 	if o == nil {
-		var ret UserMessage
+		var ret ApiThreadUserMessage
 		return ret
 	}
 
@@ -57,7 +57,7 @@ func (o *Interaction) GetUserMessage() UserMessage {
 
 // GetUserMessageOk returns a tuple with the UserMessage field value
 // and a boolean to check if the value has been set.
-func (o *Interaction) GetUserMessageOk() (*UserMessage, bool) {
+func (o *ApiThreadInteraction) GetUserMessageOk() (*ApiThreadUserMessage, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -65,14 +65,14 @@ func (o *Interaction) GetUserMessageOk() (*UserMessage, bool) {
 }
 
 // SetUserMessage sets field value
-func (o *Interaction) SetUserMessage(v UserMessage) {
+func (o *ApiThreadInteraction) SetUserMessage(v ApiThreadUserMessage) {
 	o.UserMessage = v
 }
 
 // GetAssistantActions returns the AssistantActions field value if set, zero value otherwise.
-func (o *Interaction) GetAssistantActions() []AssistantAction {
+func (o *ApiThreadInteraction) GetAssistantActions() []ApiThreadAssistantAction {
 	if o == nil || IsNil(o.AssistantActions) {
-		var ret []AssistantAction
+		var ret []ApiThreadAssistantAction
 		return ret
 	}
 	return o.AssistantActions
@@ -80,7 +80,7 @@ func (o *Interaction) GetAssistantActions() []AssistantAction {
 
 // GetAssistantActionsOk returns a tuple with the AssistantActions field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Interaction) GetAssistantActionsOk() ([]AssistantAction, bool) {
+func (o *ApiThreadInteraction) GetAssistantActionsOk() ([]ApiThreadAssistantAction, bool) {
 	if o == nil || IsNil(o.AssistantActions) {
 		return nil, false
 	}
@@ -88,7 +88,7 @@ func (o *Interaction) GetAssistantActionsOk() ([]AssistantAction, bool) {
 }
 
 // HasAssistantActions returns a boolean if a field has been set.
-func (o *Interaction) HasAssistantActions() bool {
+func (o *ApiThreadInteraction) HasAssistantActions() bool {
 	if o != nil && !IsNil(o.AssistantActions) {
 		return true
 	}
@@ -96,12 +96,12 @@ func (o *Interaction) HasAssistantActions() bool {
 	return false
 }
 
-// SetAssistantActions gets a reference to the given []AssistantAction and assigns it to the AssistantActions field.
-func (o *Interaction) SetAssistantActions(v []AssistantAction) {
+// SetAssistantActions gets a reference to the given []ApiThreadAssistantAction and assigns it to the AssistantActions field.
+func (o *ApiThreadInteraction) SetAssistantActions(v []ApiThreadAssistantAction) {
 	o.AssistantActions = v
 }
 
-func (o Interaction) MarshalJSON() ([]byte, error) {
+func (o ApiThreadInteraction) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -109,7 +109,7 @@ func (o Interaction) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o Interaction) ToMap() (map[string]interface{}, error) {
+func (o ApiThreadInteraction) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["user_message"] = o.UserMessage
 	if !IsNil(o.AssistantActions) {
@@ -118,7 +118,7 @@ func (o Interaction) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *Interaction) UnmarshalJSON(data []byte) (err error) {
+func (o *ApiThreadInteraction) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -140,55 +140,53 @@ func (o *Interaction) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varInteraction := _Interaction{}
+	varApiThreadInteraction := _ApiThreadInteraction{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varInteraction)
+	err = decoder.Decode(&varApiThreadInteraction)
 
 	if err != nil {
 		return err
 	}
 
-	*o = Interaction(varInteraction)
+	*o = ApiThreadInteraction(varApiThreadInteraction)
 
 	return err
 }
 
-type NullableInteraction struct {
-	value *Interaction
+type NullableApiThreadInteraction struct {
+	value *ApiThreadInteraction
 	isSet bool
 }
 
-func (v NullableInteraction) Get() *Interaction {
+func (v NullableApiThreadInteraction) Get() *ApiThreadInteraction {
 	return v.value
 }
 
-func (v *NullableInteraction) Set(val *Interaction) {
+func (v *NullableApiThreadInteraction) Set(val *ApiThreadInteraction) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableInteraction) IsSet() bool {
+func (v NullableApiThreadInteraction) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableInteraction) Unset() {
+func (v *NullableApiThreadInteraction) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableInteraction(val *Interaction) *NullableInteraction {
-	return &NullableInteraction{value: val, isSet: true}
+func NewNullableApiThreadInteraction(val *ApiThreadInteraction) *NullableApiThreadInteraction {
+	return &NullableApiThreadInteraction{value: val, isSet: true}
 }
 
-func (v NullableInteraction) MarshalJSON() ([]byte, error) {
+func (v NullableApiThreadInteraction) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableInteraction) UnmarshalJSON(src []byte) error {
+func (v *NullableApiThreadInteraction) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
 

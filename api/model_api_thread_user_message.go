@@ -16,36 +16,36 @@ import (
 	"fmt"
 )
 
-// checks if the UserMessage type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &UserMessage{}
+// checks if the ApiThreadUserMessage type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ApiThreadUserMessage{}
 
-// UserMessage struct for UserMessage
-type UserMessage struct {
+// ApiThreadUserMessage struct for ApiThreadUserMessage
+type ApiThreadUserMessage struct {
 	Text string `json:"text"`
 }
 
-type _UserMessage UserMessage
+type _ApiThreadUserMessage ApiThreadUserMessage
 
-// NewUserMessage instantiates a new UserMessage object
+// NewApiThreadUserMessage instantiates a new ApiThreadUserMessage object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUserMessage(text string) *UserMessage {
-	this := UserMessage{}
+func NewApiThreadUserMessage(text string) *ApiThreadUserMessage {
+	this := ApiThreadUserMessage{}
 	this.Text = text
 	return &this
 }
 
-// NewUserMessageWithDefaults instantiates a new UserMessage object
+// NewApiThreadUserMessageWithDefaults instantiates a new ApiThreadUserMessage object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewUserMessageWithDefaults() *UserMessage {
-	this := UserMessage{}
+func NewApiThreadUserMessageWithDefaults() *ApiThreadUserMessage {
+	this := ApiThreadUserMessage{}
 	return &this
 }
 
 // GetText returns the Text field value
-func (o *UserMessage) GetText() string {
+func (o *ApiThreadUserMessage) GetText() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -56,7 +56,7 @@ func (o *UserMessage) GetText() string {
 
 // GetTextOk returns a tuple with the Text field value
 // and a boolean to check if the value has been set.
-func (o *UserMessage) GetTextOk() (*string, bool) {
+func (o *ApiThreadUserMessage) GetTextOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -64,11 +64,11 @@ func (o *UserMessage) GetTextOk() (*string, bool) {
 }
 
 // SetText sets field value
-func (o *UserMessage) SetText(v string) {
+func (o *ApiThreadUserMessage) SetText(v string) {
 	o.Text = v
 }
 
-func (o UserMessage) MarshalJSON() ([]byte, error) {
+func (o ApiThreadUserMessage) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -76,13 +76,13 @@ func (o UserMessage) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o UserMessage) ToMap() (map[string]interface{}, error) {
+func (o ApiThreadUserMessage) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["text"] = o.Text
 	return toSerialize, nil
 }
 
-func (o *UserMessage) UnmarshalJSON(data []byte) (err error) {
+func (o *ApiThreadUserMessage) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -104,55 +104,53 @@ func (o *UserMessage) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varUserMessage := _UserMessage{}
+	varApiThreadUserMessage := _ApiThreadUserMessage{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUserMessage)
+	err = decoder.Decode(&varApiThreadUserMessage)
 
 	if err != nil {
 		return err
 	}
 
-	*o = UserMessage(varUserMessage)
+	*o = ApiThreadUserMessage(varApiThreadUserMessage)
 
 	return err
 }
 
-type NullableUserMessage struct {
-	value *UserMessage
+type NullableApiThreadUserMessage struct {
+	value *ApiThreadUserMessage
 	isSet bool
 }
 
-func (v NullableUserMessage) Get() *UserMessage {
+func (v NullableApiThreadUserMessage) Get() *ApiThreadUserMessage {
 	return v.value
 }
 
-func (v *NullableUserMessage) Set(val *UserMessage) {
+func (v *NullableApiThreadUserMessage) Set(val *ApiThreadUserMessage) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableUserMessage) IsSet() bool {
+func (v NullableApiThreadUserMessage) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableUserMessage) Unset() {
+func (v *NullableApiThreadUserMessage) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableUserMessage(val *UserMessage) *NullableUserMessage {
-	return &NullableUserMessage{value: val, isSet: true}
+func NewNullableApiThreadUserMessage(val *ApiThreadUserMessage) *NullableApiThreadUserMessage {
+	return &NullableApiThreadUserMessage{value: val, isSet: true}
 }
 
-func (v NullableUserMessage) MarshalJSON() ([]byte, error) {
+func (v NullableApiThreadUserMessage) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableUserMessage) UnmarshalJSON(src []byte) error {
+func (v *NullableApiThreadUserMessage) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
 

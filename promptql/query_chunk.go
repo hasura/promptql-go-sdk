@@ -1,14 +1,17 @@
 package promptql
 
 import (
+	"fmt"
 	"slices"
 
+	"github.com/google/uuid"
 	"github.com/hasura/promptql-go-sdk/api"
 )
 
 // QueryChunks are a convenient data type to help us join query response chunks together.
 type QueryChunks struct {
-	assistantActions  []api.AssistantAction
+	threadId          uuid.UUID
+	assistantActions  []api.ApiThreadAssistantAction
 	modifiedArtifacts map[string]api.ExecuteRequestArtifactsInner
 	errorChunk        *api.ErrorChunk
 
@@ -21,6 +24,16 @@ func NewQueryChunks() *QueryChunks {
 	return &QueryChunks{
 		modifiedArtifacts: make(map[string]api.ExecuteRequestArtifactsInner),
 	}
+}
+
+// GetThreadID return the thread id.
+func (qc QueryChunks) GetThreadId() uuid.UUID {
+	return qc.threadId
+}
+
+// SetThreadID set the thread id.
+func (qc *QueryChunks) SetThreadId(threadId uuid.UUID) {
+	qc.threadId = threadId
 }
 
 // GetModifiedArtifacts return a list of artifacts.
@@ -49,12 +62,12 @@ func (qc *QueryChunks) SetModifiedArtifacts(inputs []api.ExecuteRequestArtifacts
 }
 
 // GetAssistantActions return a list of assistant actions.
-func (qc QueryChunks) GetAssistantActions() []api.AssistantAction {
+func (qc QueryChunks) GetAssistantActions() []api.ApiThreadAssistantAction {
 	return qc.assistantActions
 }
 
 // SetAssistantActions set assistant actions.
-func (qc *QueryChunks) SetAssistantActions(inputs []api.AssistantAction) {
+func (qc *QueryChunks) SetAssistantActions(inputs []api.ApiThreadAssistantAction) {
 	qc.assistantActions = inputs
 }
 
@@ -80,6 +93,13 @@ func (qc *QueryChunks) Add(chunk api.QueryResponseChunk) error {
 	}
 
 	switch chk := chunk.Interface().(type) {
+	case *api.ThreadMetadataChunk:
+		threadId, err := uuid.Parse(chk.ThreadId)
+		if err != nil {
+			return fmt.Errorf("invalid thread metadata chunk: %w", err)
+		}
+
+		qc.threadId = threadId
 	case *api.ArtifactUpdateChunk:
 		if chk == nil || chk.Artifact.IsNil() {
 			return nil
@@ -118,6 +138,7 @@ func (qc *QueryChunks) Add(chunk api.QueryResponseChunk) error {
 // AsQueryResponse converts to a QueryResponse instance.
 func (qc QueryChunks) AsQueryResponse() api.QueryResponse {
 	return api.QueryResponse{
+		ThreadId:          qc.threadId.String(),
 		AssistantActions:  qc.GetAssistantActions(),
 		ModifiedArtifacts: qc.GetModifiedArtifacts(),
 	}
@@ -159,7 +180,7 @@ func (qc *QueryChunks) mergeAssistantActionChunk(chk *api.AssistantActionChunk) 
 	for i := len(qc.assistantActions); i <= chunkIndex; i++ {
 		qc.assistantActions = append(
 			qc.assistantActions,
-			*api.NewAssistantAction(),
+			*api.NewApiThreadAssistantAction(),
 		)
 	}
 
@@ -181,7 +202,7 @@ func NewAssistantActionChunk(index int32) *api.AssistantActionChunk {
 	}
 }
 
-// will change when the set of required properties is changed.
+// NewErrorChunk create a new error chunk.
 func NewErrorChunk(error_ string) *api.ErrorChunk {
 	return &api.ErrorChunk{
 		Type:  string(api.QueryResponseTypeErrorChunk),
@@ -190,6 +211,14 @@ func NewErrorChunk(error_ string) *api.ErrorChunk {
 }
 
 // will change when the set of required properties is changed.
+func NewThreadMetadataChunk(threadId uuid.UUID) *api.ThreadMetadataChunk {
+	return &api.ThreadMetadataChunk{
+		Type:     string(api.QueryResponseTypeThreadMetadataChunk),
+		ThreadId: threadId.String(),
+	}
+}
+
+// NewArtifactUpdateChunk create a new artifact update chunk.
 func NewArtifactUpdateChunk[A api.ArtifactInterface](artifact A) *api.ArtifactUpdateChunk {
 	return &api.ArtifactUpdateChunk{
 		Type:     string(api.QueryResponseTypeArtifactUpdateChunk),

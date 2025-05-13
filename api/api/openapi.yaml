@@ -118,7 +118,7 @@ components:
       - api_key
       - provider
       title: ApiOpenAIConfig
-    AssistantAction:
+    ApiThreadAssistantAction:
       example:
         code: code
         code_error: code_error
@@ -141,7 +141,42 @@ components:
         code_error:
           nullable: true
           type: string
-      title: AssistantAction
+      title: ApiThreadAssistantAction
+    ApiThreadInteraction:
+      example:
+        assistant_actions:
+        - code: code
+          code_error: code_error
+          message: message
+          plan: plan
+          code_output: code_output
+        - code: code
+          code_error: code_error
+          message: message
+          plan: plan
+          code_output: code_output
+        user_message:
+          text: text
+      properties:
+        user_message:
+          $ref: '#/components/schemas/ApiThreadUserMessage'
+        assistant_actions:
+          items:
+            $ref: '#/components/schemas/ApiThreadAssistantAction'
+          type: array
+      required:
+      - user_message
+      title: ApiThreadInteraction
+    ApiThreadUserMessage:
+      example:
+        text: text
+      properties:
+        text:
+          title: Text
+          type: string
+      required:
+      - text
+      title: ApiThreadUserMessage
     DdnConfig:
       example:
         headers:
@@ -231,31 +266,6 @@ components:
       required:
       - provider
       title: HasuraLlmConfig
-    Interaction:
-      example:
-        assistant_actions:
-        - code: code
-          code_error: code_error
-          message: message
-          plan: plan
-          code_output: code_output
-        - code: code
-          code_error: code_error
-          message: message
-          plan: plan
-          code_output: code_output
-        user_message:
-          text: text
-      properties:
-        user_message:
-          $ref: '#/components/schemas/UserMessage'
-        assistant_actions:
-          items:
-            $ref: '#/components/schemas/AssistantAction'
-          type: array
-      required:
-      - user_message
-      title: Interaction
     LlmUsage:
       example:
         provider: unknown
@@ -411,7 +421,7 @@ components:
           type: string
         interactions:
           items:
-            $ref: '#/components/schemas/Interaction'
+            $ref: '#/components/schemas/ApiThreadInteraction'
           type: array
         stream:
           title: Stream
@@ -425,6 +435,7 @@ components:
       title: QueryRequest
     QueryResponse:
       example:
+        thread_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         assistant_actions:
         - code: code
           code_error: code_error
@@ -446,9 +457,13 @@ components:
           data: data
           title: title
       properties:
+        thread_id:
+          format: uuid
+          title: Thread Id
+          type: string
         assistant_actions:
           items:
-            $ref: '#/components/schemas/AssistantAction'
+            $ref: '#/components/schemas/ApiThreadAssistantAction'
           type: array
         modified_artifacts:
           description: List of artifacts created or updated in this request. May contain
@@ -459,6 +474,7 @@ components:
       required:
       - assistant_actions
       - modified_artifacts
+      - thread_id
       title: QueryResponse
     TableArtifact:
       properties:
@@ -513,16 +529,6 @@ components:
       - identifier
       - title
       title: TextArtifact
-    UserMessage:
-      example:
-        text: text
-      properties:
-        text:
-          title: Text
-          type: string
-      required:
-      - text
-      title: UserMessage
     ValidationError:
       example:
         msg: msg
@@ -589,8 +595,10 @@ components:
           artifact_update_chunk: '#/components/schemas/ArtifactUpdateChunk'
           assistant_action_chunk: '#/components/schemas/AssistantActionChunk'
           error_chunk: '#/components/schemas/ErrorChunk'
+          thread_metadata_chunk: '#/components/schemas/ThreadMetadataChunk'
         propertyName: type
       oneOf:
+      - $ref: '#/components/schemas/ThreadMetadataChunk'
       - $ref: '#/components/schemas/AssistantActionChunk'
       - $ref: '#/components/schemas/ArtifactUpdateChunk'
       - $ref: '#/components/schemas/ErrorChunk'
@@ -650,6 +658,21 @@ components:
       - error
       - type
       title: ErrorChunk
+    ThreadMetadataChunk:
+      properties:
+        type:
+          enum:
+          - thread_metadata_chunk
+          title: Type
+          type: string
+        thread_id:
+          format: uuid
+          title: Thread Id
+          type: string
+      required:
+      - thread_id
+      - type
+      title: ThreadMetadataChunk
     ExecuteRequest_ai_primitives_llm:
       discriminator:
         mapping:

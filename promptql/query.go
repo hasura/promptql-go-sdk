@@ -184,9 +184,9 @@ func (c *Client) validateQueryRequest(body api.QueryRequest) (api.QueryRequest, 
 // NewQueryRequestMessage is a convenient function to create a simple query request with message only.
 func NewQueryRequestMessage(message string) api.QueryRequest {
 	return api.QueryRequest{
-		Interactions: []api.Interaction{
+		Interactions: []api.ApiThreadInteraction{
 			{
-				UserMessage: api.UserMessage{
+				UserMessage: api.ApiThreadUserMessage{
 					Text: message,
 				},
 			},

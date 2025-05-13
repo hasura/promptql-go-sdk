@@ -12,14 +12,14 @@ Name | Type | Description | Notes
 **Artifacts** | Pointer to [**[]ExecuteRequestArtifactsInner**](ExecuteRequestArtifactsInner.md) |  | [optional] 
 **SystemInstructions** | Pointer to **NullableString** |  | [optional] 
 **Timezone** | **string** | An IANA timezone used to interpret queries that implicitly require timezones | 
-**Interactions** | [**[]Interaction**](Interaction.md) |  | 
+**Interactions** | [**[]ApiThreadInteraction**](ApiThreadInteraction.md) |  | 
 **Stream** | **bool** |  | 
 
 ## Methods
 
 ### NewQueryRequest
 
-`func NewQueryRequest(version string, ddn DdnConfig, timezone string, interactions []Interaction, stream bool, ) *QueryRequest`
+`func NewQueryRequest(version string, ddn DdnConfig, timezone string, interactions []ApiThreadInteraction, stream bool, ) *QueryRequest`
 
 NewQueryRequest instantiates a new QueryRequest object
 This constructor will assign default values to properties that have it defined,
@@ -251,20 +251,20 @@ SetTimezone sets Timezone field to given value.
 
 ### GetInteractions
 
-`func (o *QueryRequest) GetInteractions() []Interaction`
+`func (o *QueryRequest) GetInteractions() []ApiThreadInteraction`
 
 GetInteractions returns the Interactions field if non-nil, zero value otherwise.
 
 ### GetInteractionsOk
 
-`func (o *QueryRequest) GetInteractionsOk() (*[]Interaction, bool)`
+`func (o *QueryRequest) GetInteractionsOk() (*[]ApiThreadInteraction, bool)`
 
 GetInteractionsOk returns a tuple with the Interactions field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetInteractions
 
-`func (o *QueryRequest) SetInteractions(v []Interaction)`
+`func (o *QueryRequest) SetInteractions(v []ApiThreadInteraction)`
 
 SetInteractions sets Interactions field to given value.
 

@@ -16,38 +16,38 @@ import (
 	"fmt"
 )
 
-// checks if the ErrorChunk type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &ErrorChunk{}
+// checks if the ThreadMetadataChunk type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ThreadMetadataChunk{}
 
-// ErrorChunk struct for ErrorChunk
-type ErrorChunk struct {
+// ThreadMetadataChunk struct for ThreadMetadataChunk
+type ThreadMetadataChunk struct {
 	Type string `json:"type"`
-	Error string `json:"error"`
+	ThreadId string `json:"thread_id"`
 }
 
-type _ErrorChunk ErrorChunk
+type _ThreadMetadataChunk ThreadMetadataChunk
 
-// NewErrorChunk instantiates a new ErrorChunk object
+// NewThreadMetadataChunk instantiates a new ThreadMetadataChunk object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewErrorChunk(type_ string, error_ string) *ErrorChunk {
-	this := ErrorChunk{}
+func NewThreadMetadataChunk(type_ string, threadId string) *ThreadMetadataChunk {
+	this := ThreadMetadataChunk{}
 	this.Type = type_
-	this.Error = error_
+	this.ThreadId = threadId
 	return &this
 }
 
-// NewErrorChunkWithDefaults instantiates a new ErrorChunk object
+// NewThreadMetadataChunkWithDefaults instantiates a new ThreadMetadataChunk object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewErrorChunkWithDefaults() *ErrorChunk {
-	this := ErrorChunk{}
+func NewThreadMetadataChunkWithDefaults() *ThreadMetadataChunk {
+	this := ThreadMetadataChunk{}
 	return &this
 }
 
 // GetType returns the Type field value
-func (o *ErrorChunk) GetType() string {
+func (o *ThreadMetadataChunk) GetType() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -58,7 +58,7 @@ func (o *ErrorChunk) GetType() string {
 
 // GetTypeOk returns a tuple with the Type field value
 // and a boolean to check if the value has been set.
-func (o *ErrorChunk) GetTypeOk() (*string, bool) {
+func (o *ThreadMetadataChunk) GetTypeOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -66,35 +66,35 @@ func (o *ErrorChunk) GetTypeOk() (*string, bool) {
 }
 
 // SetType sets field value
-func (o *ErrorChunk) SetType(v string) {
+func (o *ThreadMetadataChunk) SetType(v string) {
 	o.Type = v
 }
 
-// GetError returns the Error field value
-func (o *ErrorChunk) GetError() string {
+// GetThreadId returns the ThreadId field value
+func (o *ThreadMetadataChunk) GetThreadId() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.Error
+	return o.ThreadId
 }
 
-// GetErrorOk returns a tuple with the Error field value
+// GetThreadIdOk returns a tuple with the ThreadId field value
 // and a boolean to check if the value has been set.
-func (o *ErrorChunk) GetErrorOk() (*string, bool) {
+func (o *ThreadMetadataChunk) GetThreadIdOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Error, true
+	return &o.ThreadId, true
 }
 
-// SetError sets field value
-func (o *ErrorChunk) SetError(v string) {
-	o.Error = v
+// SetThreadId sets field value
+func (o *ThreadMetadataChunk) SetThreadId(v string) {
+	o.ThreadId = v
 }
 
-func (o ErrorChunk) MarshalJSON() ([]byte, error) {
+func (o ThreadMetadataChunk) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -102,20 +102,20 @@ func (o ErrorChunk) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o ErrorChunk) ToMap() (map[string]interface{}, error) {
+func (o ThreadMetadataChunk) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["type"] = o.Type
-	toSerialize["error"] = o.Error
+	toSerialize["thread_id"] = o.ThreadId
 	return toSerialize, nil
 }
 
-func (o *ErrorChunk) UnmarshalJSON(data []byte) (err error) {
+func (o *ThreadMetadataChunk) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"type",
-		"error",
+		"thread_id",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -132,52 +132,52 @@ func (o *ErrorChunk) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varErrorChunk := _ErrorChunk{}
+	varThreadMetadataChunk := _ThreadMetadataChunk{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	err = decoder.Decode(&varErrorChunk)
+	err = decoder.Decode(&varThreadMetadataChunk)
 
 	if err != nil {
 		return err
 	}
 
-	*o = ErrorChunk(varErrorChunk)
+	*o = ThreadMetadataChunk(varThreadMetadataChunk)
 
 	return err
 }
 
-type NullableErrorChunk struct {
-	value *ErrorChunk
+type NullableThreadMetadataChunk struct {
+	value *ThreadMetadataChunk
 	isSet bool
 }
 
-func (v NullableErrorChunk) Get() *ErrorChunk {
+func (v NullableThreadMetadataChunk) Get() *ThreadMetadataChunk {
 	return v.value
 }
 
-func (v *NullableErrorChunk) Set(val *ErrorChunk) {
+func (v *NullableThreadMetadataChunk) Set(val *ThreadMetadataChunk) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableErrorChunk) IsSet() bool {
+func (v NullableThreadMetadataChunk) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableErrorChunk) Unset() {
+func (v *NullableThreadMetadataChunk) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableErrorChunk(val *ErrorChunk) *NullableErrorChunk {
-	return &NullableErrorChunk{value: val, isSet: true}
+func NewNullableThreadMetadataChunk(val *ThreadMetadataChunk) *NullableThreadMetadataChunk {
+	return &NullableThreadMetadataChunk{value: val, isSet: true}
 }
 
-func (v NullableErrorChunk) MarshalJSON() ([]byte, error) {
+func (v NullableThreadMetadataChunk) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableErrorChunk) UnmarshalJSON(src []byte) error {
+func (v *NullableThreadMetadataChunk) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

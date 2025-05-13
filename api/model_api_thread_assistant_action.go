@@ -14,11 +14,11 @@ import (
 	"encoding/json"
 )
 
-// checks if the AssistantAction type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &AssistantAction{}
+// checks if the ApiThreadAssistantAction type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ApiThreadAssistantAction{}
 
-// AssistantAction struct for AssistantAction
-type AssistantAction struct {
+// ApiThreadAssistantAction struct for ApiThreadAssistantAction
+type ApiThreadAssistantAction struct {
 	Message NullableString `json:"message,omitempty"`
 	Plan NullableString `json:"plan,omitempty"`
 	Code NullableString `json:"code,omitempty"`
@@ -26,25 +26,25 @@ type AssistantAction struct {
 	CodeError NullableString `json:"code_error,omitempty"`
 }
 
-// NewAssistantAction instantiates a new AssistantAction object
+// NewApiThreadAssistantAction instantiates a new ApiThreadAssistantAction object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAssistantAction() *AssistantAction {
-	this := AssistantAction{}
+func NewApiThreadAssistantAction() *ApiThreadAssistantAction {
+	this := ApiThreadAssistantAction{}
 	return &this
 }
 
-// NewAssistantActionWithDefaults instantiates a new AssistantAction object
+// NewApiThreadAssistantActionWithDefaults instantiates a new ApiThreadAssistantAction object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewAssistantActionWithDefaults() *AssistantAction {
-	this := AssistantAction{}
+func NewApiThreadAssistantActionWithDefaults() *ApiThreadAssistantAction {
+	this := ApiThreadAssistantAction{}
 	return &this
 }
 
 // GetMessage returns the Message field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *AssistantAction) GetMessage() string {
+func (o *ApiThreadAssistantAction) GetMessage() string {
 	if o == nil || IsNil(o.Message.Get()) {
 		var ret string
 		return ret
@@ -55,7 +55,7 @@ func (o *AssistantAction) GetMessage() string {
 // GetMessageOk returns a tuple with the Message field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *AssistantAction) GetMessageOk() (*string, bool) {
+func (o *ApiThreadAssistantAction) GetMessageOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -63,7 +63,7 @@ func (o *AssistantAction) GetMessageOk() (*string, bool) {
 }
 
 // HasMessage returns a boolean if a field has been set.
-func (o *AssistantAction) HasMessage() bool {
+func (o *ApiThreadAssistantAction) HasMessage() bool {
 	if o != nil && o.Message.IsSet() {
 		return true
 	}
@@ -72,21 +72,21 @@ func (o *AssistantAction) HasMessage() bool {
 }
 
 // SetMessage gets a reference to the given NullableString and assigns it to the Message field.
-func (o *AssistantAction) SetMessage(v string) {
+func (o *ApiThreadAssistantAction) SetMessage(v string) {
 	o.Message.Set(&v)
 }
 // SetMessageNil sets the value for Message to be an explicit nil
-func (o *AssistantAction) SetMessageNil() {
+func (o *ApiThreadAssistantAction) SetMessageNil() {
 	o.Message.Set(nil)
 }
 
 // UnsetMessage ensures that no value is present for Message, not even an explicit nil
-func (o *AssistantAction) UnsetMessage() {
+func (o *ApiThreadAssistantAction) UnsetMessage() {
 	o.Message.Unset()
 }
 
 // GetPlan returns the Plan field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *AssistantAction) GetPlan() string {
+func (o *ApiThreadAssistantAction) GetPlan() string {
 	if o == nil || IsNil(o.Plan.Get()) {
 		var ret string
 		return ret
@@ -97,7 +97,7 @@ func (o *AssistantAction) GetPlan() string {
 // GetPlanOk returns a tuple with the Plan field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *AssistantAction) GetPlanOk() (*string, bool) {
+func (o *ApiThreadAssistantAction) GetPlanOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -105,7 +105,7 @@ func (o *AssistantAction) GetPlanOk() (*string, bool) {
 }
 
 // HasPlan returns a boolean if a field has been set.
-func (o *AssistantAction) HasPlan() bool {
+func (o *ApiThreadAssistantAction) HasPlan() bool {
 	if o != nil && o.Plan.IsSet() {
 		return true
 	}
@@ -114,21 +114,21 @@ func (o *AssistantAction) HasPlan() bool {
 }
 
 // SetPlan gets a reference to the given NullableString and assigns it to the Plan field.
-func (o *AssistantAction) SetPlan(v string) {
+func (o *ApiThreadAssistantAction) SetPlan(v string) {
 	o.Plan.Set(&v)
 }
 // SetPlanNil sets the value for Plan to be an explicit nil
-func (o *AssistantAction) SetPlanNil() {
+func (o *ApiThreadAssistantAction) SetPlanNil() {
 	o.Plan.Set(nil)
 }
 
 // UnsetPlan ensures that no value is present for Plan, not even an explicit nil
-func (o *AssistantAction) UnsetPlan() {
+func (o *ApiThreadAssistantAction) UnsetPlan() {
 	o.Plan.Unset()
 }
 
 // GetCode returns the Code field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *AssistantAction) GetCode() string {
+func (o *ApiThreadAssistantAction) GetCode() string {
 	if o == nil || IsNil(o.Code.Get()) {
 		var ret string
 		return ret
@@ -139,7 +139,7 @@ func (o *AssistantAction) GetCode() string {
 // GetCodeOk returns a tuple with the Code field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *AssistantAction) GetCodeOk() (*string, bool) {
+func (o *ApiThreadAssistantAction) GetCodeOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -147,7 +147,7 @@ func (o *AssistantAction) GetCodeOk() (*string, bool) {
 }
 
 // HasCode returns a boolean if a field has been set.
-func (o *AssistantAction) HasCode() bool {
+func (o *ApiThreadAssistantAction) HasCode() bool {
 	if o != nil && o.Code.IsSet() {
 		return true
 	}
@@ -156,21 +156,21 @@ func (o *AssistantAction) HasCode() bool {
 }
 
 // SetCode gets a reference to the given NullableString and assigns it to the Code field.
-func (o *AssistantAction) SetCode(v string) {
+func (o *ApiThreadAssistantAction) SetCode(v string) {
 	o.Code.Set(&v)
 }
 // SetCodeNil sets the value for Code to be an explicit nil
-func (o *AssistantAction) SetCodeNil() {
+func (o *ApiThreadAssistantAction) SetCodeNil() {
 	o.Code.Set(nil)
 }
 
 // UnsetCode ensures that no value is present for Code, not even an explicit nil
-func (o *AssistantAction) UnsetCode() {
+func (o *ApiThreadAssistantAction) UnsetCode() {
 	o.Code.Unset()
 }
 
 // GetCodeOutput returns the CodeOutput field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *AssistantAction) GetCodeOutput() string {
+func (o *ApiThreadAssistantAction) GetCodeOutput() string {
 	if o == nil || IsNil(o.CodeOutput.Get()) {
 		var ret string
 		return ret
@@ -181,7 +181,7 @@ func (o *AssistantAction) GetCodeOutput() string {
 // GetCodeOutputOk returns a tuple with the CodeOutput field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *AssistantAction) GetCodeOutputOk() (*string, bool) {
+func (o *ApiThreadAssistantAction) GetCodeOutputOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -189,7 +189,7 @@ func (o *AssistantAction) GetCodeOutputOk() (*string, bool) {
 }
 
 // HasCodeOutput returns a boolean if a field has been set.
-func (o *AssistantAction) HasCodeOutput() bool {
+func (o *ApiThreadAssistantAction) HasCodeOutput() bool {
 	if o != nil && o.CodeOutput.IsSet() {
 		return true
 	}
@@ -198,21 +198,21 @@ func (o *AssistantAction) HasCodeOutput() bool {
 }
 
 // SetCodeOutput gets a reference to the given NullableString and assigns it to the CodeOutput field.
-func (o *AssistantAction) SetCodeOutput(v string) {
+func (o *ApiThreadAssistantAction) SetCodeOutput(v string) {
 	o.CodeOutput.Set(&v)
 }
 // SetCodeOutputNil sets the value for CodeOutput to be an explicit nil
-func (o *AssistantAction) SetCodeOutputNil() {
+func (o *ApiThreadAssistantAction) SetCodeOutputNil() {
 	o.CodeOutput.Set(nil)
 }
 
 // UnsetCodeOutput ensures that no value is present for CodeOutput, not even an explicit nil
-func (o *AssistantAction) UnsetCodeOutput() {
+func (o *ApiThreadAssistantAction) UnsetCodeOutput() {
 	o.CodeOutput.Unset()
 }
 
 // GetCodeError returns the CodeError field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *AssistantAction) GetCodeError() string {
+func (o *ApiThreadAssistantAction) GetCodeError() string {
 	if o == nil || IsNil(o.CodeError.Get()) {
 		var ret string
 		return ret
@@ -223,7 +223,7 @@ func (o *AssistantAction) GetCodeError() string {
 // GetCodeErrorOk returns a tuple with the CodeError field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *AssistantAction) GetCodeErrorOk() (*string, bool) {
+func (o *ApiThreadAssistantAction) GetCodeErrorOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -231,7 +231,7 @@ func (o *AssistantAction) GetCodeErrorOk() (*string, bool) {
 }
 
 // HasCodeError returns a boolean if a field has been set.
-func (o *AssistantAction) HasCodeError() bool {
+func (o *ApiThreadAssistantAction) HasCodeError() bool {
 	if o != nil && o.CodeError.IsSet() {
 		return true
 	}
@@ -240,20 +240,20 @@ func (o *AssistantAction) HasCodeError() bool {
 }
 
 // SetCodeError gets a reference to the given NullableString and assigns it to the CodeError field.
-func (o *AssistantAction) SetCodeError(v string) {
+func (o *ApiThreadAssistantAction) SetCodeError(v string) {
 	o.CodeError.Set(&v)
 }
 // SetCodeErrorNil sets the value for CodeError to be an explicit nil
-func (o *AssistantAction) SetCodeErrorNil() {
+func (o *ApiThreadAssistantAction) SetCodeErrorNil() {
 	o.CodeError.Set(nil)
 }
 
 // UnsetCodeError ensures that no value is present for CodeError, not even an explicit nil
-func (o *AssistantAction) UnsetCodeError() {
+func (o *ApiThreadAssistantAction) UnsetCodeError() {
 	o.CodeError.Unset()
 }
 
-func (o AssistantAction) MarshalJSON() ([]byte, error) {
+func (o ApiThreadAssistantAction) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -261,7 +261,7 @@ func (o AssistantAction) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o AssistantAction) ToMap() (map[string]interface{}, error) {
+func (o ApiThreadAssistantAction) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	if o.Message.IsSet() {
 		toSerialize["message"] = o.Message.Get()
@@ -281,40 +281,39 @@ func (o AssistantAction) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-type NullableAssistantAction struct {
-	value *AssistantAction
+type NullableApiThreadAssistantAction struct {
+	value *ApiThreadAssistantAction
 	isSet bool
 }
 
-func (v NullableAssistantAction) Get() *AssistantAction {
+func (v NullableApiThreadAssistantAction) Get() *ApiThreadAssistantAction {
 	return v.value
 }
 
-func (v *NullableAssistantAction) Set(val *AssistantAction) {
+func (v *NullableApiThreadAssistantAction) Set(val *ApiThreadAssistantAction) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableAssistantAction) IsSet() bool {
+func (v NullableApiThreadAssistantAction) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableAssistantAction) Unset() {
+func (v *NullableApiThreadAssistantAction) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableAssistantAction(val *AssistantAction) *NullableAssistantAction {
-	return &NullableAssistantAction{value: val, isSet: true}
+func NewNullableApiThreadAssistantAction(val *ApiThreadAssistantAction) *NullableApiThreadAssistantAction {
+	return &NullableApiThreadAssistantAction{value: val, isSet: true}
 }
 
-func (v NullableAssistantAction) MarshalJSON() ([]byte, error) {
+func (v NullableApiThreadAssistantAction) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableAssistantAction) UnmarshalJSON(src []byte) error {
+func (v *NullableApiThreadAssistantAction) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
 

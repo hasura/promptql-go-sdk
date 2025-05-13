@@ -221,7 +221,6 @@ func (o *PromptQlExecutionResult) UnmarshalJSON(data []byte) (err error) {
 	varPromptQlExecutionResult := _PromptQlExecutionResult{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varPromptQlExecutionResult)
 
 	if err != nil {
@@ -268,5 +267,4 @@ func (v *NullablePromptQlExecutionResult) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
 

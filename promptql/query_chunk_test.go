@@ -2,14 +2,18 @@ package promptql_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/hasura/promptql-go-sdk/api"
 	"github.com/hasura/promptql-go-sdk/promptql"
 )
 
 func TestQueryChunks(t *testing.T) {
+	threadId := uuid.MustParse("9a6c9bc2-8005-4cf7-ba93-22edf90fa490")
 	fixtures := []string{
+		fmt.Sprintf("{\"type\":\"thread_metadata_chunk\",\"thread_id\":\"%s\"}", threadId),
 		"{\"message\":\"I'll re\",\"plan\":null,\"code\":null,\"code_output\":null,\"code_error\":null,\"type\":\"assistant_action_chunk\",\"index\":0}",
 		"{\"message\":\"trieve the list of custome\",\"plan\":null,\"code\":null,\"code_output\":null,\"code_error\":null,\"type\":\"assistant_action_chunk\",\"index\":0}",
 		"{\"message\":\"rs for you.\",\"plan\":null,\"code\":null,\"code_output\":null,\"code_error\":null,\"type\":\"assistant_action_chunk\",\"index\":0}",
@@ -39,6 +43,7 @@ func TestQueryChunks(t *testing.T) {
 	}
 
 	expected := promptql.NewQueryChunks()
+	expected.SetThreadId(threadId)
 	expected.SetModifiedArtifacts([]api.ExecuteRequestArtifactsInner{
 		api.TableArtifactAsExecuteRequestArtifactsInner(
 			promptql.NewTableArtifact("customer_list", "List of Customers", []map[string]any{
@@ -48,7 +53,7 @@ func TestQueryChunks(t *testing.T) {
 			}),
 		),
 	})
-	expected.SetAssistantActions([]api.AssistantAction{
+	expected.SetAssistantActions([]api.ApiThreadAssistantAction{
 		{
 			Code:       *api.NewNullableString(api.PtrString("sql = \"\"\"\nSELECT id, name \nFROM customers()\nORDER BY name\n\"\"\"\n\ncustomers = executor.run_sql(sql)\n\nif len(customers) == 0:\n    executor.print(\"No customers found.\")\nelse:\n    executor.store_artifact(\n        'customer_list',\n        'List of Customers',\n        'table',\n        customers\n    )")),
 			CodeOutput: *api.NewNullableString(api.PtrString("SQL statement returned 3 rows. Sample rows: [{'id': 3.0, 'name': 'Jerry'}, {'id': 1.0, 'name': 'John'}]\nStored table artifact: identifier = 'customer_list', title = 'List of Customers', number of rows = 3, sample rows preview = [{'id': 3, 'name': 'Jerry'}, {'id': 1, 'name': 'John'}]\n")),

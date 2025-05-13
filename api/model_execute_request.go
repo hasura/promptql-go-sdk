@@ -241,7 +241,6 @@ func (o *ExecuteRequest) UnmarshalJSON(data []byte) (err error) {
 	varExecuteRequest := _ExecuteRequest{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varExecuteRequest)
 
 	if err != nil {
@@ -288,5 +287,4 @@ func (v *NullableExecuteRequest) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
 

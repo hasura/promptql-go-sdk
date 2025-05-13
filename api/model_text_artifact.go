@@ -191,7 +191,6 @@ func (o *TextArtifact) UnmarshalJSON(data []byte) (err error) {
 	varTextArtifact := _TextArtifact{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varTextArtifact)
 
 	if err != nil {
@@ -238,5 +237,4 @@ func (v *NullableTextArtifact) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
 

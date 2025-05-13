@@ -227,7 +227,6 @@ func (o *ApiOpenAIConfig) UnmarshalJSON(data []byte) (err error) {
 	varApiOpenAIConfig := _ApiOpenAIConfig{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varApiOpenAIConfig)
 
 	if err != nil {
@@ -274,5 +273,4 @@ func (v *NullableApiOpenAIConfig) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
 
