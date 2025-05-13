@@ -123,4 +123,3 @@ func (v *NullableHTTPValidationError) UnmarshalJSON(src []byte) error {
 	return json.Unmarshal(src, &v.value)
 }
 
-

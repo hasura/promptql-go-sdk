@@ -135,7 +135,6 @@ func (o *ThreadMetadataChunk) UnmarshalJSON(data []byte) (err error) {
 	varThreadMetadataChunk := _ThreadMetadataChunk{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varThreadMetadataChunk)
 
 	if err != nil {
@@ -182,5 +181,4 @@ func (v *NullableThreadMetadataChunk) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
 

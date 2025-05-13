@@ -135,7 +135,6 @@ func (o *ErrorChunk) UnmarshalJSON(data []byte) (err error) {
 	varErrorChunk := _ErrorChunk{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varErrorChunk)
 
 	if err != nil {
@@ -182,5 +181,4 @@ func (v *NullableErrorChunk) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
 

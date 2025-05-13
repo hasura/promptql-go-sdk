@@ -107,7 +107,6 @@ func (o *HasuraLlmConfig) UnmarshalJSON(data []byte) (err error) {
 	varHasuraLlmConfig := _HasuraLlmConfig{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varHasuraLlmConfig)
 
 	if err != nil {
@@ -154,5 +153,4 @@ func (v *NullableHasuraLlmConfig) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
 

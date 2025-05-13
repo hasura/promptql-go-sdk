@@ -192,7 +192,6 @@ func (o *VisualizationArtifact) UnmarshalJSON(data []byte) (err error) {
 	varVisualizationArtifact := _VisualizationArtifact{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varVisualizationArtifact)
 
 	if err != nil {
@@ -239,5 +238,4 @@ func (v *NullableVisualizationArtifact) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
 

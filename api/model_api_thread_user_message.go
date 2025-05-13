@@ -107,7 +107,6 @@ func (o *ApiThreadUserMessage) UnmarshalJSON(data []byte) (err error) {
 	varApiThreadUserMessage := _ApiThreadUserMessage{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varApiThreadUserMessage)
 
 	if err != nil {
@@ -154,5 +153,4 @@ func (v *NullableApiThreadUserMessage) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
 

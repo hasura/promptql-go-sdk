@@ -227,7 +227,6 @@ func (o *ApiAnthropicConfig) UnmarshalJSON(data []byte) (err error) {
 	varApiAnthropicConfig := _ApiAnthropicConfig{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varApiAnthropicConfig)
 
 	if err != nil {
@@ -274,5 +273,4 @@ func (v *NullableApiAnthropicConfig) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
 

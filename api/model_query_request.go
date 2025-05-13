@@ -430,7 +430,6 @@ func (o *QueryRequest) UnmarshalJSON(data []byte) (err error) {
 	varQueryRequest := _QueryRequest{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varQueryRequest)
 
 	if err != nil {
@@ -477,5 +476,4 @@ func (v *NullableQueryRequest) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
 
