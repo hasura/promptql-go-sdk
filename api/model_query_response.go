@@ -21,7 +21,8 @@ var _ MappedNullable = &QueryResponse{}
 
 // QueryResponse struct for QueryResponse
 type QueryResponse struct {
-	AssistantActions []AssistantAction `json:"assistant_actions"`
+	ThreadId string `json:"thread_id"`
+	AssistantActions []ApiThreadAssistantAction `json:"assistant_actions"`
 	// List of artifacts created or updated in this request. May contain duplicate artifact identifiers.
 	ModifiedArtifacts []ExecuteRequestArtifactsInner `json:"modified_artifacts"`
 }
@@ -32,8 +33,9 @@ type _QueryResponse QueryResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewQueryResponse(assistantActions []AssistantAction, modifiedArtifacts []ExecuteRequestArtifactsInner) *QueryResponse {
+func NewQueryResponse(threadId string, assistantActions []ApiThreadAssistantAction, modifiedArtifacts []ExecuteRequestArtifactsInner) *QueryResponse {
 	this := QueryResponse{}
+	this.ThreadId = threadId
 	this.AssistantActions = assistantActions
 	this.ModifiedArtifacts = modifiedArtifacts
 	return &this
@@ -47,10 +49,34 @@ func NewQueryResponseWithDefaults() *QueryResponse {
 	return &this
 }
 
-// GetAssistantActions returns the AssistantActions field value
-func (o *QueryResponse) GetAssistantActions() []AssistantAction {
+// GetThreadId returns the ThreadId field value
+func (o *QueryResponse) GetThreadId() string {
 	if o == nil {
-		var ret []AssistantAction
+		var ret string
+		return ret
+	}
+
+	return o.ThreadId
+}
+
+// GetThreadIdOk returns a tuple with the ThreadId field value
+// and a boolean to check if the value has been set.
+func (o *QueryResponse) GetThreadIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.ThreadId, true
+}
+
+// SetThreadId sets field value
+func (o *QueryResponse) SetThreadId(v string) {
+	o.ThreadId = v
+}
+
+// GetAssistantActions returns the AssistantActions field value
+func (o *QueryResponse) GetAssistantActions() []ApiThreadAssistantAction {
+	if o == nil {
+		var ret []ApiThreadAssistantAction
 		return ret
 	}
 
@@ -59,7 +85,7 @@ func (o *QueryResponse) GetAssistantActions() []AssistantAction {
 
 // GetAssistantActionsOk returns a tuple with the AssistantActions field value
 // and a boolean to check if the value has been set.
-func (o *QueryResponse) GetAssistantActionsOk() ([]AssistantAction, bool) {
+func (o *QueryResponse) GetAssistantActionsOk() ([]ApiThreadAssistantAction, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -67,7 +93,7 @@ func (o *QueryResponse) GetAssistantActionsOk() ([]AssistantAction, bool) {
 }
 
 // SetAssistantActions sets field value
-func (o *QueryResponse) SetAssistantActions(v []AssistantAction) {
+func (o *QueryResponse) SetAssistantActions(v []ApiThreadAssistantAction) {
 	o.AssistantActions = v
 }
 
@@ -105,6 +131,7 @@ func (o QueryResponse) MarshalJSON() ([]byte, error) {
 
 func (o QueryResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	toSerialize["thread_id"] = o.ThreadId
 	toSerialize["assistant_actions"] = o.AssistantActions
 	toSerialize["modified_artifacts"] = o.ModifiedArtifacts
 	return toSerialize, nil
@@ -115,6 +142,7 @@ func (o *QueryResponse) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
+		"thread_id",
 		"assistant_actions",
 		"modified_artifacts",
 	}

@@ -4,12 +4,13 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**Type** | **string** |  | 
+**ThreadId** | **string** |  | 
 **Message** | Pointer to **string** |  | [optional] 
 **Plan** | Pointer to **string** |  | [optional] 
 **Code** | Pointer to **string** |  | [optional] 
 **CodeOutput** | Pointer to **string** |  | [optional] 
 **CodeError** | Pointer to **string** |  | [optional] 
-**Type** | **string** |  | 
 **Index** | **int32** |  | 
 **Artifact** | [**Artifact**](Artifact.md) |  | 
 **Error** | **string** |  | 
@@ -18,7 +19,7 @@ Name | Type | Description | Notes
 
 ### NewQueryResponseChunk
 
-`func NewQueryResponseChunk(type_ string, index int32, artifact Artifact, error_ string, ) *QueryResponseChunk`
+`func NewQueryResponseChunk(type_ string, threadId string, index int32, artifact Artifact, error_ string, ) *QueryResponseChunk`
 
 NewQueryResponseChunk instantiates a new QueryResponseChunk object
 This constructor will assign default values to properties that have it defined,
@@ -32,6 +33,46 @@ will change when the set of required properties is changed
 NewQueryResponseChunkWithDefaults instantiates a new QueryResponseChunk object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetType
+
+`func (o *QueryResponseChunk) GetType() string`
+
+GetType returns the Type field if non-nil, zero value otherwise.
+
+### GetTypeOk
+
+`func (o *QueryResponseChunk) GetTypeOk() (*string, bool)`
+
+GetTypeOk returns a tuple with the Type field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetType
+
+`func (o *QueryResponseChunk) SetType(v string)`
+
+SetType sets Type field to given value.
+
+
+### GetThreadId
+
+`func (o *QueryResponseChunk) GetThreadId() string`
+
+GetThreadId returns the ThreadId field if non-nil, zero value otherwise.
+
+### GetThreadIdOk
+
+`func (o *QueryResponseChunk) GetThreadIdOk() (*string, bool)`
+
+GetThreadIdOk returns a tuple with the ThreadId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetThreadId
+
+`func (o *QueryResponseChunk) SetThreadId(v string)`
+
+SetThreadId sets ThreadId field to given value.
+
 
 ### GetMessage
 
@@ -157,26 +198,6 @@ SetCodeError sets CodeError field to given value.
 `func (o *QueryResponseChunk) HasCodeError() bool`
 
 HasCodeError returns a boolean if a field has been set.
-
-### GetType
-
-`func (o *QueryResponseChunk) GetType() string`
-
-GetType returns the Type field if non-nil, zero value otherwise.
-
-### GetTypeOk
-
-`func (o *QueryResponseChunk) GetTypeOk() (*string, bool)`
-
-GetTypeOk returns a tuple with the Type field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetType
-
-`func (o *QueryResponseChunk) SetType(v string)`
-
-SetType sets Type field to given value.
-
 
 ### GetIndex
 

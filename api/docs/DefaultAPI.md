@@ -92,7 +92,7 @@ import (
 )
 
 func main() {
-	queryRequest := *openapiclient.NewQueryRequest("Version_example", *openapiclient.NewDdnConfig("Url_example"), "Timezone_example", []openapiclient.Interaction{*openapiclient.NewInteraction(*openapiclient.NewUserMessage("Text_example"))}, false) // QueryRequest | 
+	queryRequest := *openapiclient.NewQueryRequest("Version_example", *openapiclient.NewDdnConfig("Url_example"), "Timezone_example", []openapiclient.ApiThreadInteraction{*openapiclient.NewApiThreadInteraction(*openapiclient.NewApiThreadUserMessage("Text_example"))}, false) // QueryRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

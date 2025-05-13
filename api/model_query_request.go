@@ -30,7 +30,7 @@ type QueryRequest struct {
 	SystemInstructions NullableString `json:"system_instructions,omitempty"`
 	// An IANA timezone used to interpret queries that implicitly require timezones
 	Timezone string `json:"timezone"`
-	Interactions []Interaction `json:"interactions"`
+	Interactions []ApiThreadInteraction `json:"interactions"`
 	Stream bool `json:"stream"`
 }
 
@@ -40,7 +40,7 @@ type _QueryRequest QueryRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewQueryRequest(version string, ddn DdnConfig, timezone string, interactions []Interaction, stream bool) *QueryRequest {
+func NewQueryRequest(version string, ddn DdnConfig, timezone string, interactions []ApiThreadInteraction, stream bool) *QueryRequest {
 	this := QueryRequest{}
 	this.Version = version
 	this.Ddn = ddn
@@ -321,9 +321,9 @@ func (o *QueryRequest) SetTimezone(v string) {
 }
 
 // GetInteractions returns the Interactions field value
-func (o *QueryRequest) GetInteractions() []Interaction {
+func (o *QueryRequest) GetInteractions() []ApiThreadInteraction {
 	if o == nil {
-		var ret []Interaction
+		var ret []ApiThreadInteraction
 		return ret
 	}
 
@@ -332,7 +332,7 @@ func (o *QueryRequest) GetInteractions() []Interaction {
 
 // GetInteractionsOk returns a tuple with the Interactions field value
 // and a boolean to check if the value has been set.
-func (o *QueryRequest) GetInteractionsOk() ([]Interaction, bool) {
+func (o *QueryRequest) GetInteractionsOk() ([]ApiThreadInteraction, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -340,7 +340,7 @@ func (o *QueryRequest) GetInteractionsOk() ([]Interaction, bool) {
 }
 
 // SetInteractions sets field value
-func (o *QueryRequest) SetInteractions(v []Interaction) {
+func (o *QueryRequest) SetInteractions(v []ApiThreadInteraction) {
 	o.Interactions = v
 }
 

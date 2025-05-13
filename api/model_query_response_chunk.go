@@ -14,12 +14,14 @@ const (
 	QueryResponseTypeAssistantActionChunk QueryResponseChunkType = "assistant_action_chunk"
 	QueryResponseTypeArtifactUpdateChunk  QueryResponseChunkType = "artifact_update_chunk"
 	QueryResponseTypeErrorChunk           QueryResponseChunkType = "error_chunk"
+	QueryResponseTypeThreadMetadataChunk  QueryResponseChunkType = "thread_metadata_chunk"
 )
 
 var enumValuesQueryResponseChunkType = []QueryResponseChunkType{
 	QueryResponseTypeAssistantActionChunk,
 	QueryResponseTypeArtifactUpdateChunk,
 	QueryResponseTypeErrorChunk,
+	QueryResponseTypeThreadMetadataChunk,
 }
 
 // ParseQueryResponseChunkType parses the QueryResponseChunk type enum from string.
@@ -68,6 +70,13 @@ func ErrorChunkAsQueryResponseChunk(v *ErrorChunk) QueryResponseChunk {
 	}
 }
 
+// ThreadMetadataChunkAsQueryResponseChunk is a convenience function that returns ThreadMetadataChunk wrapped in QueryResponseChunk
+func ThreadMetadataChunkAsQueryResponseChunk(v *ThreadMetadataChunk) QueryResponseChunk {
+	return QueryResponseChunk{
+		inner: v,
+	}
+}
+
 // Unmarshal JSON data into one of the pointers in the struct.
 func (dst *QueryResponseChunk) UnmarshalJSON(data []byte) error {
 	var raw map[string]json.RawMessage
@@ -110,6 +119,14 @@ func (dst *QueryResponseChunk) UnmarshalJSON(data []byte) error {
 		dst.inner = &result
 	case QueryResponseTypeErrorChunk:
 		result := ErrorChunk{}
+
+		if err := json.Unmarshal(data, &result); err != nil {
+			return err
+		}
+
+		dst.inner = &result
+	case QueryResponseTypeThreadMetadataChunk:
+		result := ThreadMetadataChunk{}
 
 		if err := json.Unmarshal(data, &result); err != nil {
 			return err
@@ -175,4 +192,50 @@ func (src QueryResponseChunk) AsErrorChunk() *ErrorChunk {
 	}
 
 	return result
+}
+
+// AsThreadMetadataChunk returns the instance as a nullable ThreadMetadataChunk.
+func (src QueryResponseChunk) AsThreadMetadataChunk() *ThreadMetadataChunk {
+	result, ok := src.inner.(*ThreadMetadataChunk)
+	if !ok {
+		return nil
+	}
+
+	return result
+}
+
+type NullableQueryResponseChunk struct {
+	value *QueryResponseChunk
+	isSet bool
+}
+
+func (v NullableQueryResponseChunk) Get() *QueryResponseChunk {
+	return v.value
+}
+
+func (v *NullableQueryResponseChunk) Set(val *QueryResponseChunk) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableQueryResponseChunk) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableQueryResponseChunk) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableQueryResponseChunk(val *QueryResponseChunk) *NullableQueryResponseChunk {
+	return &NullableQueryResponseChunk{value: val, isSet: true}
+}
+
+func (v NullableQueryResponseChunk) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableQueryResponseChunk) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }
