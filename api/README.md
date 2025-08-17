@@ -92,19 +92,26 @@ Class | Method | HTTP request | Description
  - [Artifact](docs/Artifact.md)
  - [ArtifactUpdateChunk](docs/ArtifactUpdateChunk.md)
  - [AssistantActionChunk](docs/AssistantActionChunk.md)
+ - [AutomationArtifact](docs/AutomationArtifact.md)
+ - [AutomationArtifactData](docs/AutomationArtifactData.md)
  - [DdnConfig](docs/DdnConfig.md)
+ - [DdnConfigV2](docs/DdnConfigV2.md)
  - [ErrorChunk](docs/ErrorChunk.md)
- - [ExecuteRequest](docs/ExecuteRequest.md)
- - [ExecuteRequestAiPrimitivesLlm](docs/ExecuteRequestAiPrimitivesLlm.md)
- - [ExecuteRequestArtifactsInner](docs/ExecuteRequestArtifactsInner.md)
+ - [ExecuteRequestV1](docs/ExecuteRequestV1.md)
+ - [ExecuteRequestV1AiPrimitivesLlm](docs/ExecuteRequestV1AiPrimitivesLlm.md)
+ - [ExecuteRequestV1ArtifactsInner](docs/ExecuteRequestV1ArtifactsInner.md)
+ - [ExecuteRequestV2](docs/ExecuteRequestV2.md)
  - [HTTPValidationError](docs/HTTPValidationError.md)
- - [HasuraLlmConfig](docs/HasuraLlmConfig.md)
+ - [HasuraLlmConfigV1](docs/HasuraLlmConfigV1.md)
  - [Llm](docs/Llm.md)
  - [LlmUsage](docs/LlmUsage.md)
  - [PromptQlExecutionResult](docs/PromptQlExecutionResult.md)
- - [QueryRequest](docs/QueryRequest.md)
+ - [QueryRequestV1](docs/QueryRequestV1.md)
+ - [QueryRequestV2](docs/QueryRequestV2.md)
  - [QueryResponse](docs/QueryResponse.md)
  - [QueryResponseChunk](docs/QueryResponseChunk.md)
+ - [Request](docs/Request.md)
+ - [Request1](docs/Request1.md)
  - [TableArtifact](docs/TableArtifact.md)
  - [TextArtifact](docs/TextArtifact.md)
  - [ThreadMetadataChunk](docs/ThreadMetadataChunk.md)
@@ -116,18 +123,7 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Authorization
 
-
-Authentication schemes defined for the API:
-### HTTPBearer
-
-- **Type**: HTTP Bearer token authentication
-
-Example
-
-```go
-auth := context.WithValue(context.Background(), api.ContextAccessToken, "BEARER_TOKEN_STRING")
-r, err := client.Service.Operation(auth, args)
-```
+Endpoints do not require authorization.
 
 
 ## Documentation for Utility Methods

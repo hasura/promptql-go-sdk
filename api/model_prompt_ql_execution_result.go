@@ -24,7 +24,7 @@ type PromptQlExecutionResult struct {
 	Output string `json:"output"`
 	Error NullableString `json:"error"`
 	AccessedArtifactIds []string `json:"accessed_artifact_ids"`
-	ModifiedArtifacts []ExecuteRequestArtifactsInner `json:"modified_artifacts"`
+	ModifiedArtifacts []ExecuteRequestV1ArtifactsInner `json:"modified_artifacts"`
 	LlmUsages []LlmUsage `json:"llm_usages"`
 }
 
@@ -34,7 +34,7 @@ type _PromptQlExecutionResult PromptQlExecutionResult
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPromptQlExecutionResult(output string, error_ NullableString, accessedArtifactIds []string, modifiedArtifacts []ExecuteRequestArtifactsInner, llmUsages []LlmUsage) *PromptQlExecutionResult {
+func NewPromptQlExecutionResult(output string, error_ NullableString, accessedArtifactIds []string, modifiedArtifacts []ExecuteRequestV1ArtifactsInner, llmUsages []LlmUsage) *PromptQlExecutionResult {
 	this := PromptQlExecutionResult{}
 	this.Output = output
 	this.Error = error_
@@ -127,9 +127,9 @@ func (o *PromptQlExecutionResult) SetAccessedArtifactIds(v []string) {
 }
 
 // GetModifiedArtifacts returns the ModifiedArtifacts field value
-func (o *PromptQlExecutionResult) GetModifiedArtifacts() []ExecuteRequestArtifactsInner {
+func (o *PromptQlExecutionResult) GetModifiedArtifacts() []ExecuteRequestV1ArtifactsInner {
 	if o == nil {
-		var ret []ExecuteRequestArtifactsInner
+		var ret []ExecuteRequestV1ArtifactsInner
 		return ret
 	}
 
@@ -138,7 +138,7 @@ func (o *PromptQlExecutionResult) GetModifiedArtifacts() []ExecuteRequestArtifac
 
 // GetModifiedArtifactsOk returns a tuple with the ModifiedArtifacts field value
 // and a boolean to check if the value has been set.
-func (o *PromptQlExecutionResult) GetModifiedArtifactsOk() ([]ExecuteRequestArtifactsInner, bool) {
+func (o *PromptQlExecutionResult) GetModifiedArtifactsOk() ([]ExecuteRequestV1ArtifactsInner, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -146,7 +146,7 @@ func (o *PromptQlExecutionResult) GetModifiedArtifactsOk() ([]ExecuteRequestArti
 }
 
 // SetModifiedArtifacts sets field value
-func (o *PromptQlExecutionResult) SetModifiedArtifacts(v []ExecuteRequestArtifactsInner) {
+func (o *PromptQlExecutionResult) SetModifiedArtifacts(v []ExecuteRequestV1ArtifactsInner) {
 	o.ModifiedArtifacts = v
 }
 

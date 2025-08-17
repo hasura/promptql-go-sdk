@@ -1,11 +1,6 @@
 .PHONY: openapi-gen
 openapi-gen:
-	docker run --rm -v ./:/local openapitools/openapi-generator-cli:latest generate \
-		-i https://api.promptql.pro.hasura.io/openapi.json \
-		-g go \
-		-t /local/template \
-		-c /local/openapi.config.json \
-		-o /local/api
+	./scripts/openapi-gen.sh
 
 # Install golangci-lint tool to run lint locally
 # https://golangci-lint.run/usage/install

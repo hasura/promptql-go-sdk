@@ -32,5 +32,9 @@ api_query.go
 model_artifact.go
 model_llm.go
 model_execute_request_artifacts_inner.go
+model_execute_request_v1_artifacts_inner.go
 model_execute_request_ai_primitives_llm.go
+model_execute_request_v1_ai_primitives_llm.go
 model_query_response_chunk.go
+model_request_1.go
+model_request.go

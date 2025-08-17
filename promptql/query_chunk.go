@@ -12,7 +12,7 @@ import (
 type QueryChunks struct {
 	threadId          uuid.UUID
 	assistantActions  []api.ApiThreadAssistantAction
-	modifiedArtifacts map[string]api.ExecuteRequestArtifactsInner
+	modifiedArtifacts map[string]api.ExecuteRequestV1ArtifactsInner
 	errorChunk        *api.ErrorChunk
 
 	// cache the sorted list of artifacts for the consistent order
@@ -22,7 +22,7 @@ type QueryChunks struct {
 // NewQueryChunks create an empty QueryChunks instance.
 func NewQueryChunks() *QueryChunks {
 	return &QueryChunks{
-		modifiedArtifacts: make(map[string]api.ExecuteRequestArtifactsInner),
+		modifiedArtifacts: make(map[string]api.ExecuteRequestV1ArtifactsInner),
 	}
 }
 
@@ -37,8 +37,8 @@ func (qc *QueryChunks) SetThreadId(threadId uuid.UUID) {
 }
 
 // GetModifiedArtifacts return a list of artifacts.
-func (qc QueryChunks) GetModifiedArtifacts() []api.ExecuteRequestArtifactsInner {
-	results := make([]api.ExecuteRequestArtifactsInner, len(qc.modifiedArtifacts))
+func (qc QueryChunks) GetModifiedArtifacts() []api.ExecuteRequestV1ArtifactsInner {
+	results := make([]api.ExecuteRequestV1ArtifactsInner, len(qc.modifiedArtifacts))
 
 	for i, key := range qc.modifiedArtifactKeys {
 		results[i] = qc.modifiedArtifacts[key]
@@ -48,8 +48,8 @@ func (qc QueryChunks) GetModifiedArtifacts() []api.ExecuteRequestArtifactsInner 
 }
 
 // SetModifiedArtifacts set modified artifacts.
-func (qc *QueryChunks) SetModifiedArtifacts(inputs []api.ExecuteRequestArtifactsInner) {
-	qc.modifiedArtifacts = make(map[string]api.ExecuteRequestArtifactsInner)
+func (qc *QueryChunks) SetModifiedArtifacts(inputs []api.ExecuteRequestV1ArtifactsInner) {
+	qc.modifiedArtifacts = make(map[string]api.ExecuteRequestV1ArtifactsInner)
 	qc.modifiedArtifactKeys = make([]string, len(inputs))
 
 	for i, artifact := range inputs {
@@ -108,19 +108,19 @@ func (qc *QueryChunks) Add(chunk api.QueryResponseChunk) error {
 		key := buildArtifactKey(chk.Artifact)
 
 		if qc.modifiedArtifacts == nil {
-			qc.modifiedArtifacts = make(map[string]api.ExecuteRequestArtifactsInner)
+			qc.modifiedArtifacts = make(map[string]api.ExecuteRequestV1ArtifactsInner)
 		}
 
 		artifact, ok := qc.modifiedArtifacts[key]
 		if ok {
-			mergedArtifact := qc.mergeArtifact(artifact, api.ExecuteRequestArtifactsInner(chk.Artifact))
+			mergedArtifact := qc.mergeArtifact(artifact, api.ExecuteRequestV1ArtifactsInner(chk.Artifact))
 			if mergedArtifact != nil {
 				qc.modifiedArtifacts[key] = *mergedArtifact
 			}
 		} else {
 			qc.modifiedArtifactKeys = append(qc.modifiedArtifactKeys, key)
 			slices.Sort(qc.modifiedArtifactKeys)
-			qc.modifiedArtifacts[key] = api.ExecuteRequestArtifactsInner(chk.Artifact)
+			qc.modifiedArtifacts[key] = api.ExecuteRequestV1ArtifactsInner(chk.Artifact)
 		}
 	case *api.AssistantActionChunk:
 		qc.mergeAssistantActionChunk(chk)
@@ -145,25 +145,25 @@ func (qc QueryChunks) AsQueryResponse() api.QueryResponse {
 }
 
 func (qc *QueryChunks) mergeArtifact(
-	src, target api.ExecuteRequestArtifactsInner,
-) *api.ExecuteRequestArtifactsInner {
+	src, target api.ExecuteRequestV1ArtifactsInner,
+) *api.ExecuteRequestV1ArtifactsInner {
 	switch ta := target.Interface().(type) {
 	case *api.TableArtifact:
 		sa := src.AsTable()
 		sa.Data = append(sa.Data, ta.Data...)
-		result := api.TableArtifactAsExecuteRequestArtifactsInner(sa)
+		result := api.TableArtifactAsExecuteRequestV1ArtifactsInner(sa)
 
 		return &result
 	case *api.TextArtifact:
 		sa := src.AsText()
 		sa.Data += ta.Data
-		result := api.TextArtifactAsExecuteRequestArtifactsInner(sa)
+		result := api.TextArtifactAsExecuteRequestV1ArtifactsInner(sa)
 
 		return &result
 	case *api.VisualizationArtifact:
 		sa := src.AsVisualization()
 		sa.Data.Html += ta.Data.Html
-		result := api.VisualizationArtifactAsExecuteRequestArtifactsInner(sa)
+		result := api.VisualizationArtifactAsExecuteRequestV1ArtifactsInner(sa)
 
 		return &result
 	default:

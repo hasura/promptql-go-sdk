@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **Message** | Pointer to **NullableString** |  | [optional] 
 **Plan** | Pointer to **NullableString** |  | [optional] 
 **Code** | Pointer to **NullableString** |  | [optional] 
+**AutomationCode** | Pointer to **NullableString** |  | [optional] 
 **CodeOutput** | Pointer to **NullableString** |  | [optional] 
 **CodeError** | Pointer to **NullableString** |  | [optional] 
 
@@ -134,6 +135,41 @@ HasCode returns a boolean if a field has been set.
 `func (o *ApiThreadAssistantAction) UnsetCode()`
 
 UnsetCode ensures that no value is present for Code, not even an explicit nil
+### GetAutomationCode
+
+`func (o *ApiThreadAssistantAction) GetAutomationCode() string`
+
+GetAutomationCode returns the AutomationCode field if non-nil, zero value otherwise.
+
+### GetAutomationCodeOk
+
+`func (o *ApiThreadAssistantAction) GetAutomationCodeOk() (*string, bool)`
+
+GetAutomationCodeOk returns a tuple with the AutomationCode field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAutomationCode
+
+`func (o *ApiThreadAssistantAction) SetAutomationCode(v string)`
+
+SetAutomationCode sets AutomationCode field to given value.
+
+### HasAutomationCode
+
+`func (o *ApiThreadAssistantAction) HasAutomationCode() bool`
+
+HasAutomationCode returns a boolean if a field has been set.
+
+### SetAutomationCodeNil
+
+`func (o *ApiThreadAssistantAction) SetAutomationCodeNil(b bool)`
+
+ SetAutomationCodeNil sets the value for AutomationCode to be an explicit nil
+
+### UnsetAutomationCode
+`func (o *ApiThreadAssistantAction) UnsetAutomationCode()`
+
+UnsetAutomationCode ensures that no value is present for AutomationCode, not even an explicit nil
 ### GetCodeOutput
 
 `func (o *ApiThreadAssistantAction) GetCodeOutput() string`

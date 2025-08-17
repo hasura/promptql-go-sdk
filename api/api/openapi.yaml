@@ -13,7 +13,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ExecuteRequest'
+              $ref: '#/components/schemas/Request'
         required: true
       responses:
         "200":
@@ -28,8 +28,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
           description: Validation Error
-      security:
-      - HTTPBearer: []
       summary: Execute Program
   /query:
     post:
@@ -38,7 +36,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/QueryRequest'
+              $ref: '#/components/schemas/Request_1'
         required: true
       responses:
         "200":
@@ -48,19 +46,21 @@ paths:
                 $ref: '#/components/schemas/QueryResponse'
             text/event-stream:
               example: |+
-                data: {"message":"Let me try to store an artifact","plan":null,"code":null,"code_output":null,"code_error":null,"type":"assistant_action_chunk","index":0}
+                data: {"message":"Let me try to store an artifact","plan":null,"code":null,"automation_code":null,"code_output":null,"code_error":null,"type":"assistant_action_chunk","index":0}
 
-                data: {"message":null,"plan":"- Store an artifact with sample data","code":null,"code_output":null,"code_error":null,"type":"assistant_action_chunk","index":0}
+                data: {"message":null,"plan":"- Store an artifact with sample data","code":null,"automation_code":null,"code_output":null,"code_error":null,"type":"assistant_action_chunk","index":0}
 
-                data: {"message":null,"plan":null,"code":"executor.store_artitfact('test', 'Test artifact', 'table', [{'foo':'bar'}])","code_output":null,"code_error":null,"type":"assistant_action_chunk","index":0}
+                data: {"message":null,"plan":null,"code":"executor.store_artitfact('test', 'Test artifact', 'table', [{'foo':'bar'}])","automation_code":null,"code_output":null,"code_error":null,"type":"assistant_action_chunk","index":0}
 
-                data: {"message":null,"plan":null,"code":null,"code_output":"Artifact stored","code_error":null,"type":"assistant_action_chunk","index":0}
+                data: {"message":null,"plan":null,"code":null,"automation_code":null,"code_output":"Artifact stored","code_error":null,"type":"assistant_action_chunk","index":0}
 
                 data: {"type":"artifact_update_chunk","artifact":{"identifier":"test","title":"Test Artifact","artifact_type":"table","data":[{"foo":"bar"}]}}
 
-                data: {"message":"Your artifact is <artifact","plan":null,"code":null,"code_output":null,"code_error":null,"type":"assistant_action_chunk","index":1}
+                data: {"message":"Your artifact is <artifact","plan":null,"code":null,"automation_code":null,"code_output":null,"code_error":null,"type":"assistant_action_chunk","index":1}
 
-                data: {"message":" identifier='test'/>","plan":null,"code":null,"code_output":null,"code_error":null,"type":"assistant_action_chunk","index":1}
+                data: {"message":" identifier='test'/>","plan":null,"code":null,"automation_code":null,"code_output":null,"code_error":null,"type":"assistant_action_chunk","index":1}
+
+                data: {"type":"thread_metadata_chunk","thread_id":"00000000-0000-0000-0000-000000000000"}
 
               schema:
                 $ref: '#/components/schemas/QueryResponseChunk'
@@ -73,8 +73,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
           description: Validation Error
-      security:
-      - HTTPBearer: []
       summary: Query
 components:
   schemas:
@@ -123,6 +121,7 @@ components:
         code: code
         code_error: code_error
         message: message
+        automation_code: automation_code
         plan: plan
         code_output: code_output
       properties:
@@ -135,6 +134,9 @@ components:
         code:
           nullable: true
           type: string
+        automation_code:
+          nullable: true
+          type: string
         code_output:
           nullable: true
           type: string
@@ -143,20 +145,6 @@ components:
           type: string
       title: ApiThreadAssistantAction
     ApiThreadInteraction:
-      example:
-        assistant_actions:
-        - code: code
-          code_error: code_error
-          message: message
-          plan: plan
-          code_output: code_output
-        - code: code
-          code_error: code_error
-          message: message
-          plan: plan
-          code_output: code_output
-        user_message:
-          text: text
       properties:
         user_message:
           $ref: '#/components/schemas/ApiThreadUserMessage'
@@ -164,12 +152,25 @@ components:
           items:
             $ref: '#/components/schemas/ApiThreadAssistantAction'
           type: array
+        error:
+          nullable: true
+          type: string
+        completion_timestamp:
+          format: date-time
+          nullable: true
+          type: string
+        canceled_timestamp:
+          format: date-time
+          nullable: true
+          type: string
+        error_timestamp:
+          format: date-time
+          nullable: true
+          type: string
       required:
       - user_message
       title: ApiThreadInteraction
     ApiThreadUserMessage:
-      example:
-        text: text
       properties:
         text:
           title: Text
@@ -177,6 +178,50 @@ components:
       required:
       - text
       title: ApiThreadUserMessage
+    AutomationArtifact:
+      properties:
+        identifier:
+          title: Identifier
+          type: string
+        title:
+          title: Title
+          type: string
+        artifact_type:
+          enum:
+          - automation
+          title: Artifact Type
+          type: string
+        data:
+          $ref: '#/components/schemas/AutomationArtifactData'
+      required:
+      - artifact_type
+      - data
+      - identifier
+      - title
+      title: AutomationArtifact
+    AutomationArtifactData:
+      description: |-
+        Data structure for automation artifacts containing code and parsed schemas.
+
+        Attributes:
+            code: The Python code for the automation
+            input_schema: Parsed JSON schema for input validation (extracted from code comments)
+            output_schema: Parsed JSON schema for output validation (extracted from code comments)
+      properties:
+        code:
+          title: Code
+          type: string
+        input_schema:
+          additionalProperties: true
+          nullable: true
+          type: object
+        output_schema:
+          additionalProperties: true
+          nullable: true
+          type: object
+      required:
+      - code
+      title: AutomationArtifactData
     DdnConfig:
       example:
         headers:
@@ -195,12 +240,28 @@ components:
       required:
       - url
       title: DdnConfig
-    ExecuteRequest:
+    DdnConfigV2:
+      properties:
+        build_id:
+          format: uuid
+          nullable: true
+          type: string
+        build_version:
+          nullable: true
+          type: string
+        headers:
+          additionalProperties:
+            type: string
+          description: HTTP headers that should be forwarded to DDN
+          title: Headers
+      title: DdnConfigV2
+    ExecuteRequestV1:
       example:
         code: code
         ai_primitives_llm:
           provider: hasura
         promptql_api_key: promptql_api_key
+        version: v1
         ddn:
           headers:
             key: headers
@@ -215,6 +276,11 @@ components:
           data: data
           title: title
       properties:
+        version:
+          enum:
+          - v1
+          nullable: true
+          type: string
         code:
           title: Code
           type: string
@@ -222,19 +288,39 @@ components:
           nullable: true
           type: string
         ai_primitives_llm:
-          $ref: '#/components/schemas/ExecuteRequest_ai_primitives_llm'
+          $ref: '#/components/schemas/ExecuteRequestV1_ai_primitives_llm'
         ddn:
           $ref: '#/components/schemas/DdnConfig'
         artifacts:
           items:
-            $ref: '#/components/schemas/ExecuteRequest_artifacts_inner'
+            $ref: '#/components/schemas/ExecuteRequestV1_artifacts_inner'
           type: array
       required:
       - ai_primitives_llm
       - artifacts
       - code
       - ddn
-      title: ExecuteRequest
+      title: ExecuteRequestV1
+    ExecuteRequestV2:
+      properties:
+        version:
+          enum:
+          - v2
+          title: Version
+          type: string
+        code:
+          title: Code
+          type: string
+        ddn:
+          $ref: '#/components/schemas/DdnConfigV2'
+        artifacts:
+          items:
+            $ref: '#/components/schemas/ExecuteRequestV1_artifacts_inner'
+          type: array
+      required:
+      - code
+      - version
+      title: ExecuteRequestV2
     HTTPValidationError:
       example:
         detail:
@@ -254,7 +340,7 @@ components:
             $ref: '#/components/schemas/ValidationError'
           type: array
       title: HTTPValidationError
-    HasuraLlmConfig:
+    HasuraLlmConfigV1:
       example:
         provider: hasura
       properties:
@@ -265,13 +351,14 @@ components:
           type: string
       required:
       - provider
-      title: HasuraLlmConfig
+      title: HasuraLlmConfigV1
     LlmUsage:
       example:
         provider: unknown
         model: unknown
         output_tokens: 6
         input_tokens: 0
+        cached_tokens: 1
       properties:
         provider:
           default: unknown
@@ -289,6 +376,10 @@ components:
           default: 0
           title: Output Tokens
           type: integer
+        cached_tokens:
+          default: 0
+          title: Cached Tokens
+          type: integer
       title: LlmUsage
     PromptQlExecutionResult:
       example:
@@ -298,10 +389,12 @@ components:
           model: unknown
           output_tokens: 6
           input_tokens: 0
+          cached_tokens: 1
         - provider: unknown
           model: unknown
           output_tokens: 6
           input_tokens: 0
+          cached_tokens: 1
         error: error
         accessed_artifact_ids:
         - accessed_artifact_ids
@@ -328,7 +421,7 @@ components:
           type: array
         modified_artifacts:
           items:
-            $ref: '#/components/schemas/ExecuteRequest_artifacts_inner'
+            $ref: '#/components/schemas/ExecuteRequestV1_artifacts_inner'
           type: array
         llm_usages:
           items:
@@ -341,58 +434,24 @@ components:
       - modified_artifacts
       - output
       title: PromptQlExecutionResult
-    QueryRequest:
-      example:
-        ai_primitives_llm:
-          provider: hasura
-        stream: true
-        timezone: timezone
-        promptql_api_key: promptql_api_key
-        llm:
-          provider: hasura
-        version: v1
-        system_instructions: system_instructions
-        ddn:
-          headers:
-            key: headers
-          url: url
-        artifacts:
-        - identifier: identifier
-          artifact_type: text
-          data: data
-          title: title
-        - identifier: identifier
-          artifact_type: text
-          data: data
-          title: title
-        interactions:
-        - assistant_actions:
-          - code: code
-            code_error: code_error
-            message: message
-            plan: plan
-            code_output: code_output
-          - code: code
-            code_error: code_error
-            message: message
-            plan: plan
-            code_output: code_output
-          user_message:
-            text: text
-        - assistant_actions:
-          - code: code
-            code_error: code_error
-            message: message
-            plan: plan
-            code_output: code_output
-          - code: code
-            code_error: code_error
-            message: message
-            plan: plan
-            code_output: code_output
-          user_message:
-            text: text
+    QueryRequestV1:
       properties:
+        stream:
+          title: Stream
+          type: boolean
+        artifacts:
+          items:
+            $ref: '#/components/schemas/ExecuteRequestV1_artifacts_inner'
+          type: array
+        timezone:
+          description: An IANA timezone used to interpret queries that implicitly
+            require timezones
+          title: Timezone
+          type: string
+        interactions:
+          items:
+            $ref: '#/components/schemas/ApiThreadInteraction'
+          type: array
         version:
           enum:
           - v1
@@ -404,16 +463,28 @@ components:
         llm:
           $ref: '#/components/schemas/Llm'
         ai_primitives_llm:
-          $ref: '#/components/schemas/ExecuteRequest_ai_primitives_llm'
+          $ref: '#/components/schemas/ExecuteRequestV1_ai_primitives_llm'
         ddn:
           $ref: '#/components/schemas/DdnConfig'
-        artifacts:
-          items:
-            $ref: '#/components/schemas/ExecuteRequest_artifacts_inner'
-          type: array
         system_instructions:
           nullable: true
           type: string
+      required:
+      - ddn
+      - interactions
+      - stream
+      - timezone
+      - version
+      title: QueryRequestV1
+    QueryRequestV2:
+      properties:
+        stream:
+          title: Stream
+          type: boolean
+        artifacts:
+          items:
+            $ref: '#/components/schemas/ExecuteRequestV1_artifacts_inner'
+          type: array
         timezone:
           description: An IANA timezone used to interpret queries that implicitly
             require timezones
@@ -423,16 +494,20 @@ components:
           items:
             $ref: '#/components/schemas/ApiThreadInteraction'
           type: array
-        stream:
-          title: Stream
-          type: boolean
+        version:
+          enum:
+          - v2
+          title: Version
+          type: string
+        ddn:
+          $ref: '#/components/schemas/DdnConfigV2'
       required:
       - ddn
       - interactions
       - stream
       - timezone
       - version
-      title: QueryRequest
+      title: QueryRequestV2
     QueryResponse:
       example:
         thread_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -440,11 +515,13 @@ components:
         - code: code
           code_error: code_error
           message: message
+          automation_code: automation_code
           plan: plan
           code_output: code_output
         - code: code
           code_error: code_error
           message: message
+          automation_code: automation_code
           plan: plan
           code_output: code_output
         modified_artifacts:
@@ -469,7 +546,7 @@ components:
           description: List of artifacts created or updated in this request. May contain
             duplicate artifact identifiers.
           items:
-            $ref: '#/components/schemas/ExecuteRequest_artifacts_inner'
+            $ref: '#/components/schemas/ExecuteRequestV1_artifacts_inner'
           type: array
       required:
       - assistant_actions
@@ -494,6 +571,7 @@ components:
             \ column names"
           items:
             additionalProperties: true
+            nullable: true
             type: object
           type: array
       required:
@@ -626,6 +704,9 @@ components:
         code:
           nullable: true
           type: string
+        automation_code:
+          nullable: true
+          type: string
         code_output:
           nullable: true
           type: string
@@ -673,21 +754,37 @@ components:
       - thread_id
       - type
       title: ThreadMetadataChunk
-    ExecuteRequest_ai_primitives_llm:
+    Request:
+      anyOf:
+      - $ref: '#/components/schemas/ExecuteRequestV1'
+      - $ref: '#/components/schemas/ExecuteRequestV2'
+      title: Request
+    Request_1:
+      discriminator:
+        mapping:
+          v1: '#/components/schemas/QueryRequestV1'
+          v2: '#/components/schemas/QueryRequestV2'
+        propertyName: version
+      oneOf:
+      - $ref: '#/components/schemas/QueryRequestV1'
+      - $ref: '#/components/schemas/QueryRequestV2'
+      title: Request
+    ExecuteRequestV1_ai_primitives_llm:
       discriminator:
         mapping:
           anthropic: '#/components/schemas/ApiAnthropicConfig'
-          hasura: '#/components/schemas/HasuraLlmConfig'
+          hasura: '#/components/schemas/HasuraLlmConfigV1'
           openai: '#/components/schemas/ApiOpenAIConfig'
         propertyName: provider
       nullable: true
       oneOf:
-      - $ref: '#/components/schemas/HasuraLlmConfig'
+      - $ref: '#/components/schemas/HasuraLlmConfigV1'
       - $ref: '#/components/schemas/ApiOpenAIConfig'
       - $ref: '#/components/schemas/ApiAnthropicConfig'
-    ExecuteRequest_artifacts_inner:
+    ExecuteRequestV1_artifacts_inner:
       discriminator:
         mapping:
+          automation: '#/components/schemas/AutomationArtifact'
           table: '#/components/schemas/TableArtifact'
           text: '#/components/schemas/TextArtifact'
           visualization: '#/components/schemas/VisualizationArtifact'
@@ -696,15 +793,16 @@ components:
       - $ref: '#/components/schemas/TextArtifact'
       - $ref: '#/components/schemas/TableArtifact'
       - $ref: '#/components/schemas/VisualizationArtifact'
+      - $ref: '#/components/schemas/AutomationArtifact'
     Llm:
       discriminator:
         mapping:
           anthropic: '#/components/schemas/ApiAnthropicConfig'
-          hasura: '#/components/schemas/HasuraLlmConfig'
+          hasura: '#/components/schemas/HasuraLlmConfigV1'
           openai: '#/components/schemas/ApiOpenAIConfig'
         propertyName: provider
       oneOf:
-      - $ref: '#/components/schemas/HasuraLlmConfig'
+      - $ref: '#/components/schemas/HasuraLlmConfigV1'
       - $ref: '#/components/schemas/ApiOpenAIConfig'
       - $ref: '#/components/schemas/ApiAnthropicConfig'
       title: Llm
@@ -715,6 +813,7 @@ components:
     Artifact:
       discriminator:
         mapping:
+          automation: '#/components/schemas/AutomationArtifact'
           table: '#/components/schemas/TableArtifact'
           text: '#/components/schemas/TextArtifact'
           visualization: '#/components/schemas/VisualizationArtifact'
@@ -723,8 +822,5 @@ components:
       - $ref: '#/components/schemas/TextArtifact'
       - $ref: '#/components/schemas/TableArtifact'
       - $ref: '#/components/schemas/VisualizationArtifact'
+      - $ref: '#/components/schemas/AutomationArtifact'
       title: Artifact
-  securitySchemes:
-    HTTPBearer:
-      scheme: bearer
-      type: http

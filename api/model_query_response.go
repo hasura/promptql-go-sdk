@@ -24,7 +24,7 @@ type QueryResponse struct {
 	ThreadId string `json:"thread_id"`
 	AssistantActions []ApiThreadAssistantAction `json:"assistant_actions"`
 	// List of artifacts created or updated in this request. May contain duplicate artifact identifiers.
-	ModifiedArtifacts []ExecuteRequestArtifactsInner `json:"modified_artifacts"`
+	ModifiedArtifacts []ExecuteRequestV1ArtifactsInner `json:"modified_artifacts"`
 }
 
 type _QueryResponse QueryResponse
@@ -33,7 +33,7 @@ type _QueryResponse QueryResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewQueryResponse(threadId string, assistantActions []ApiThreadAssistantAction, modifiedArtifacts []ExecuteRequestArtifactsInner) *QueryResponse {
+func NewQueryResponse(threadId string, assistantActions []ApiThreadAssistantAction, modifiedArtifacts []ExecuteRequestV1ArtifactsInner) *QueryResponse {
 	this := QueryResponse{}
 	this.ThreadId = threadId
 	this.AssistantActions = assistantActions
@@ -98,9 +98,9 @@ func (o *QueryResponse) SetAssistantActions(v []ApiThreadAssistantAction) {
 }
 
 // GetModifiedArtifacts returns the ModifiedArtifacts field value
-func (o *QueryResponse) GetModifiedArtifacts() []ExecuteRequestArtifactsInner {
+func (o *QueryResponse) GetModifiedArtifacts() []ExecuteRequestV1ArtifactsInner {
 	if o == nil {
-		var ret []ExecuteRequestArtifactsInner
+		var ret []ExecuteRequestV1ArtifactsInner
 		return ret
 	}
 
@@ -109,7 +109,7 @@ func (o *QueryResponse) GetModifiedArtifacts() []ExecuteRequestArtifactsInner {
 
 // GetModifiedArtifactsOk returns a tuple with the ModifiedArtifacts field value
 // and a boolean to check if the value has been set.
-func (o *QueryResponse) GetModifiedArtifactsOk() ([]ExecuteRequestArtifactsInner, bool) {
+func (o *QueryResponse) GetModifiedArtifactsOk() ([]ExecuteRequestV1ArtifactsInner, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -117,7 +117,7 @@ func (o *QueryResponse) GetModifiedArtifactsOk() ([]ExecuteRequestArtifactsInner
 }
 
 // SetModifiedArtifacts sets field value
-func (o *QueryResponse) SetModifiedArtifacts(v []ExecuteRequestArtifactsInner) {
+func (o *QueryResponse) SetModifiedArtifacts(v []ExecuteRequestV1ArtifactsInner) {
 	o.ModifiedArtifacts = v
 }
 

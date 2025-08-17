@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **Model** | Pointer to **string** |  | [optional] [default to "unknown"]
 **InputTokens** | Pointer to **int32** |  | [optional] [default to 0]
 **OutputTokens** | Pointer to **int32** |  | [optional] [default to 0]
+**CachedTokens** | Pointer to **int32** |  | [optional] [default to 0]
 
 ## Methods
 
@@ -127,6 +128,31 @@ SetOutputTokens sets OutputTokens field to given value.
 `func (o *LlmUsage) HasOutputTokens() bool`
 
 HasOutputTokens returns a boolean if a field has been set.
+
+### GetCachedTokens
+
+`func (o *LlmUsage) GetCachedTokens() int32`
+
+GetCachedTokens returns the CachedTokens field if non-nil, zero value otherwise.
+
+### GetCachedTokensOk
+
+`func (o *LlmUsage) GetCachedTokensOk() (*int32, bool)`
+
+GetCachedTokensOk returns a tuple with the CachedTokens field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCachedTokens
+
+`func (o *LlmUsage) SetCachedTokens(v int32)`
+
+SetCachedTokens sets CachedTokens field to given value.
+
+### HasCachedTokens
+
+`func (o *LlmUsage) HasCachedTokens() bool`
+
+HasCachedTokens returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -23,6 +23,7 @@ type LlmUsage struct {
 	Model *string `json:"model,omitempty"`
 	InputTokens *int32 `json:"input_tokens,omitempty"`
 	OutputTokens *int32 `json:"output_tokens,omitempty"`
+	CachedTokens *int32 `json:"cached_tokens,omitempty"`
 }
 
 // NewLlmUsage instantiates a new LlmUsage object
@@ -39,6 +40,8 @@ func NewLlmUsage() *LlmUsage {
 	this.InputTokens = &inputTokens
 	var outputTokens int32 = 0
 	this.OutputTokens = &outputTokens
+	var cachedTokens int32 = 0
+	this.CachedTokens = &cachedTokens
 	return &this
 }
 
@@ -55,6 +58,8 @@ func NewLlmUsageWithDefaults() *LlmUsage {
 	this.InputTokens = &inputTokens
 	var outputTokens int32 = 0
 	this.OutputTokens = &outputTokens
+	var cachedTokens int32 = 0
+	this.CachedTokens = &cachedTokens
 	return &this
 }
 
@@ -186,6 +191,38 @@ func (o *LlmUsage) SetOutputTokens(v int32) {
 	o.OutputTokens = &v
 }
 
+// GetCachedTokens returns the CachedTokens field value if set, zero value otherwise.
+func (o *LlmUsage) GetCachedTokens() int32 {
+	if o == nil || IsNil(o.CachedTokens) {
+		var ret int32
+		return ret
+	}
+	return *o.CachedTokens
+}
+
+// GetCachedTokensOk returns a tuple with the CachedTokens field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *LlmUsage) GetCachedTokensOk() (*int32, bool) {
+	if o == nil || IsNil(o.CachedTokens) {
+		return nil, false
+	}
+	return o.CachedTokens, true
+}
+
+// HasCachedTokens returns a boolean if a field has been set.
+func (o *LlmUsage) HasCachedTokens() bool {
+	if o != nil && !IsNil(o.CachedTokens) {
+		return true
+	}
+
+	return false
+}
+
+// SetCachedTokens gets a reference to the given int32 and assigns it to the CachedTokens field.
+func (o *LlmUsage) SetCachedTokens(v int32) {
+	o.CachedTokens = &v
+}
+
 func (o LlmUsage) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -207,6 +244,9 @@ func (o LlmUsage) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.OutputTokens) {
 		toSerialize["output_tokens"] = o.OutputTokens
+	}
+	if !IsNil(o.CachedTokens) {
+		toSerialize["cached_tokens"] = o.CachedTokens
 	}
 	return toSerialize, nil
 }

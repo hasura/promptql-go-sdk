@@ -22,6 +22,7 @@ type ApiThreadAssistantAction struct {
 	Message NullableString `json:"message,omitempty"`
 	Plan NullableString `json:"plan,omitempty"`
 	Code NullableString `json:"code,omitempty"`
+	AutomationCode NullableString `json:"automation_code,omitempty"`
 	CodeOutput NullableString `json:"code_output,omitempty"`
 	CodeError NullableString `json:"code_error,omitempty"`
 }
@@ -169,6 +170,48 @@ func (o *ApiThreadAssistantAction) UnsetCode() {
 	o.Code.Unset()
 }
 
+// GetAutomationCode returns the AutomationCode field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ApiThreadAssistantAction) GetAutomationCode() string {
+	if o == nil || IsNil(o.AutomationCode.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.AutomationCode.Get()
+}
+
+// GetAutomationCodeOk returns a tuple with the AutomationCode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ApiThreadAssistantAction) GetAutomationCodeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.AutomationCode.Get(), o.AutomationCode.IsSet()
+}
+
+// HasAutomationCode returns a boolean if a field has been set.
+func (o *ApiThreadAssistantAction) HasAutomationCode() bool {
+	if o != nil && o.AutomationCode.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetAutomationCode gets a reference to the given NullableString and assigns it to the AutomationCode field.
+func (o *ApiThreadAssistantAction) SetAutomationCode(v string) {
+	o.AutomationCode.Set(&v)
+}
+// SetAutomationCodeNil sets the value for AutomationCode to be an explicit nil
+func (o *ApiThreadAssistantAction) SetAutomationCodeNil() {
+	o.AutomationCode.Set(nil)
+}
+
+// UnsetAutomationCode ensures that no value is present for AutomationCode, not even an explicit nil
+func (o *ApiThreadAssistantAction) UnsetAutomationCode() {
+	o.AutomationCode.Unset()
+}
+
 // GetCodeOutput returns the CodeOutput field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ApiThreadAssistantAction) GetCodeOutput() string {
 	if o == nil || IsNil(o.CodeOutput.Get()) {
@@ -271,6 +314,9 @@ func (o ApiThreadAssistantAction) ToMap() (map[string]interface{}, error) {
 	}
 	if o.Code.IsSet() {
 		toSerialize["code"] = o.Code.Get()
+	}
+	if o.AutomationCode.IsSet() {
+		toSerialize["automation_code"] = o.AutomationCode.Get()
 	}
 	if o.CodeOutput.IsSet() {
 		toSerialize["code_output"] = o.CodeOutput.Get()

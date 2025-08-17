@@ -14,12 +14,14 @@ const (
 	ArtifactTypeText          ArtifactType = "text"
 	ArtifactTypeTable         ArtifactType = "table"
 	ArtifactTypeVisualization ArtifactType = "visualization"
+	ArtifactTypeAutomation    ArtifactType = "automation"
 )
 
 var enumValuesArtifactType = []ArtifactType{
 	ArtifactTypeText,
 	ArtifactTypeTable,
 	ArtifactTypeVisualization,
+	ArtifactTypeAutomation,
 }
 
 // ParseArtifactType parses the artifact type enum from string.
@@ -94,6 +96,13 @@ func VisualizationArtifactAsArtifact(v *VisualizationArtifact) Artifact {
 	}
 }
 
+// AutomationArtifactAsArtifact is a convenience function that returns AutomationArtifact wrapped in Artifact.
+func AutomationArtifactAsArtifact(v *AutomationArtifact) Artifact {
+	return Artifact{
+		inner: v,
+	}
+}
+
 // Unmarshal JSON data into one of the pointers in the struct.
 func (dst *Artifact) UnmarshalJSON(data []byte) error {
 	var raw map[string]json.RawMessage
@@ -136,6 +145,14 @@ func (dst *Artifact) UnmarshalJSON(data []byte) error {
 		dst.inner = &result
 	case ArtifactTypeVisualization:
 		result := VisualizationArtifact{}
+
+		if err := json.Unmarshal(data, &result); err != nil {
+			return err
+		}
+
+		dst.inner = &result
+	case ArtifactTypeAutomation:
+		result := AutomationArtifact{}
 
 		if err := json.Unmarshal(data, &result); err != nil {
 			return err
@@ -201,7 +218,7 @@ func (src Artifact) AsText() *TextArtifact {
 	return result
 }
 
-// AsText converts the instance to a nullable TableArtifact.
+// AsTable converts the instance to a nullable TableArtifact.
 func (src Artifact) AsTable() *TableArtifact {
 	result, ok := src.inner.(*TableArtifact)
 	if !ok {
@@ -211,9 +228,19 @@ func (src Artifact) AsTable() *TableArtifact {
 	return result
 }
 
-// AsText converts the instance to a nullable VisualizationArtifact.
+// AsVisualization converts the instance to a nullable VisualizationArtifact.
 func (src Artifact) AsVisualization() *VisualizationArtifact {
 	result, ok := src.inner.(*VisualizationArtifact)
+	if !ok {
+		return nil
+	}
+
+	return result
+}
+
+// AsAutomation converts the instance to a nullable AutomationArtifact.
+func (src Artifact) AsAutomation() *AutomationArtifact {
+	result, ok := src.inner.(*AutomationArtifact)
 	if !ok {
 		return nil
 	}

@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **Message** | Pointer to **string** |  | [optional] 
 **Plan** | Pointer to **string** |  | [optional] 
 **Code** | Pointer to **string** |  | [optional] 
+**AutomationCode** | Pointer to **string** |  | [optional] 
 **CodeOutput** | Pointer to **string** |  | [optional] 
 **CodeError** | Pointer to **string** |  | [optional] 
 **Index** | **int32** |  | 
@@ -148,6 +149,31 @@ SetCode sets Code field to given value.
 `func (o *QueryResponseChunk) HasCode() bool`
 
 HasCode returns a boolean if a field has been set.
+
+### GetAutomationCode
+
+`func (o *QueryResponseChunk) GetAutomationCode() string`
+
+GetAutomationCode returns the AutomationCode field if non-nil, zero value otherwise.
+
+### GetAutomationCodeOk
+
+`func (o *QueryResponseChunk) GetAutomationCodeOk() (*string, bool)`
+
+GetAutomationCodeOk returns a tuple with the AutomationCode field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAutomationCode
+
+`func (o *QueryResponseChunk) SetAutomationCode(v string)`
+
+SetAutomationCode sets AutomationCode field to given value.
+
+### HasAutomationCode
+
+`func (o *QueryResponseChunk) HasAutomationCode() bool`
+
+HasAutomationCode returns a boolean if a field has been set.
 
 ### GetCodeOutput
 

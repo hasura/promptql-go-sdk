@@ -14,7 +14,7 @@ import (
 // [Natural Language Query API]: https://hasura.io/docs/promptql/promptql-apis/natural-language-api/
 func (c *Client) ExecuteProgram(
 	ctx context.Context,
-	body api.ExecuteRequest,
+	body api.ExecuteRequestV1,
 ) (*api.PromptQlExecutionResult, error) {
 	ctx, span := tracer.Start(ctx, "ExecuteProgram")
 	defer span.End()
@@ -29,7 +29,7 @@ func (c *Client) ExecuteProgram(
 	}
 
 	if body.Artifacts == nil {
-		body.Artifacts = make([]api.ExecuteRequestArtifactsInner, 0)
+		body.Artifacts = make([]api.ExecuteRequestV1ArtifactsInner, 0)
 	}
 
 	ddn := body.Ddn.Get()
@@ -47,11 +47,12 @@ func (c *Client) ExecuteProgram(
 	body.Ddn.Set(ddn)
 
 	if body.AiPrimitivesLlm.Get() == nil {
-		llm := api.NewExecuteRequestAiPrimitivesLlm(NewHasuraLlmConfig())
+		llm := api.NewExecuteRequestV1AiPrimitivesLlm(NewHasuraLlmConfig())
 		body.AiPrimitivesLlm.Set(&llm)
 	}
 
-	req := c.APIClient.DefaultAPI.ExecuteProgramExecuteProgramPost(ctx).ExecuteRequest(body)
+	req := c.APIClient.DefaultAPI.ExecuteProgramExecuteProgramPost(ctx).
+		Request(api.ExecuteRequestV1AsQueryRequest(&body))
 
 	result, _, err := req.Execute()
 	if err != nil {
@@ -63,8 +64,8 @@ func (c *Client) ExecuteProgram(
 }
 
 // NewExecuteProgramRequest is a convenient function to create a execute program request from code.
-func NewExecuteProgramRequest(code string) api.ExecuteRequest {
-	return api.ExecuteRequest{
+func NewExecuteProgramRequestV1(code string) api.ExecuteRequestV1 {
+	return api.ExecuteRequestV1{
 		Code: code,
 	}
 }

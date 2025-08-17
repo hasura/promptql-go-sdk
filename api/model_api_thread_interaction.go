@@ -12,6 +12,7 @@ package api
 
 import (
 	"encoding/json"
+	"time"
 	"bytes"
 	"fmt"
 )
@@ -23,6 +24,10 @@ var _ MappedNullable = &ApiThreadInteraction{}
 type ApiThreadInteraction struct {
 	UserMessage ApiThreadUserMessage `json:"user_message"`
 	AssistantActions []ApiThreadAssistantAction `json:"assistant_actions,omitempty"`
+	Error NullableString `json:"error,omitempty"`
+	CompletionTimestamp NullableTime `json:"completion_timestamp,omitempty"`
+	CanceledTimestamp NullableTime `json:"canceled_timestamp,omitempty"`
+	ErrorTimestamp NullableTime `json:"error_timestamp,omitempty"`
 }
 
 type _ApiThreadInteraction ApiThreadInteraction
@@ -101,6 +106,174 @@ func (o *ApiThreadInteraction) SetAssistantActions(v []ApiThreadAssistantAction)
 	o.AssistantActions = v
 }
 
+// GetError returns the Error field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ApiThreadInteraction) GetError() string {
+	if o == nil || IsNil(o.Error.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.Error.Get()
+}
+
+// GetErrorOk returns a tuple with the Error field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ApiThreadInteraction) GetErrorOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Error.Get(), o.Error.IsSet()
+}
+
+// HasError returns a boolean if a field has been set.
+func (o *ApiThreadInteraction) HasError() bool {
+	if o != nil && o.Error.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetError gets a reference to the given NullableString and assigns it to the Error field.
+func (o *ApiThreadInteraction) SetError(v string) {
+	o.Error.Set(&v)
+}
+// SetErrorNil sets the value for Error to be an explicit nil
+func (o *ApiThreadInteraction) SetErrorNil() {
+	o.Error.Set(nil)
+}
+
+// UnsetError ensures that no value is present for Error, not even an explicit nil
+func (o *ApiThreadInteraction) UnsetError() {
+	o.Error.Unset()
+}
+
+// GetCompletionTimestamp returns the CompletionTimestamp field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ApiThreadInteraction) GetCompletionTimestamp() time.Time {
+	if o == nil || IsNil(o.CompletionTimestamp.Get()) {
+		var ret time.Time
+		return ret
+	}
+	return *o.CompletionTimestamp.Get()
+}
+
+// GetCompletionTimestampOk returns a tuple with the CompletionTimestamp field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ApiThreadInteraction) GetCompletionTimestampOk() (*time.Time, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.CompletionTimestamp.Get(), o.CompletionTimestamp.IsSet()
+}
+
+// HasCompletionTimestamp returns a boolean if a field has been set.
+func (o *ApiThreadInteraction) HasCompletionTimestamp() bool {
+	if o != nil && o.CompletionTimestamp.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetCompletionTimestamp gets a reference to the given NullableTime and assigns it to the CompletionTimestamp field.
+func (o *ApiThreadInteraction) SetCompletionTimestamp(v time.Time) {
+	o.CompletionTimestamp.Set(&v)
+}
+// SetCompletionTimestampNil sets the value for CompletionTimestamp to be an explicit nil
+func (o *ApiThreadInteraction) SetCompletionTimestampNil() {
+	o.CompletionTimestamp.Set(nil)
+}
+
+// UnsetCompletionTimestamp ensures that no value is present for CompletionTimestamp, not even an explicit nil
+func (o *ApiThreadInteraction) UnsetCompletionTimestamp() {
+	o.CompletionTimestamp.Unset()
+}
+
+// GetCanceledTimestamp returns the CanceledTimestamp field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ApiThreadInteraction) GetCanceledTimestamp() time.Time {
+	if o == nil || IsNil(o.CanceledTimestamp.Get()) {
+		var ret time.Time
+		return ret
+	}
+	return *o.CanceledTimestamp.Get()
+}
+
+// GetCanceledTimestampOk returns a tuple with the CanceledTimestamp field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ApiThreadInteraction) GetCanceledTimestampOk() (*time.Time, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.CanceledTimestamp.Get(), o.CanceledTimestamp.IsSet()
+}
+
+// HasCanceledTimestamp returns a boolean if a field has been set.
+func (o *ApiThreadInteraction) HasCanceledTimestamp() bool {
+	if o != nil && o.CanceledTimestamp.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetCanceledTimestamp gets a reference to the given NullableTime and assigns it to the CanceledTimestamp field.
+func (o *ApiThreadInteraction) SetCanceledTimestamp(v time.Time) {
+	o.CanceledTimestamp.Set(&v)
+}
+// SetCanceledTimestampNil sets the value for CanceledTimestamp to be an explicit nil
+func (o *ApiThreadInteraction) SetCanceledTimestampNil() {
+	o.CanceledTimestamp.Set(nil)
+}
+
+// UnsetCanceledTimestamp ensures that no value is present for CanceledTimestamp, not even an explicit nil
+func (o *ApiThreadInteraction) UnsetCanceledTimestamp() {
+	o.CanceledTimestamp.Unset()
+}
+
+// GetErrorTimestamp returns the ErrorTimestamp field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ApiThreadInteraction) GetErrorTimestamp() time.Time {
+	if o == nil || IsNil(o.ErrorTimestamp.Get()) {
+		var ret time.Time
+		return ret
+	}
+	return *o.ErrorTimestamp.Get()
+}
+
+// GetErrorTimestampOk returns a tuple with the ErrorTimestamp field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ApiThreadInteraction) GetErrorTimestampOk() (*time.Time, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.ErrorTimestamp.Get(), o.ErrorTimestamp.IsSet()
+}
+
+// HasErrorTimestamp returns a boolean if a field has been set.
+func (o *ApiThreadInteraction) HasErrorTimestamp() bool {
+	if o != nil && o.ErrorTimestamp.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetErrorTimestamp gets a reference to the given NullableTime and assigns it to the ErrorTimestamp field.
+func (o *ApiThreadInteraction) SetErrorTimestamp(v time.Time) {
+	o.ErrorTimestamp.Set(&v)
+}
+// SetErrorTimestampNil sets the value for ErrorTimestamp to be an explicit nil
+func (o *ApiThreadInteraction) SetErrorTimestampNil() {
+	o.ErrorTimestamp.Set(nil)
+}
+
+// UnsetErrorTimestamp ensures that no value is present for ErrorTimestamp, not even an explicit nil
+func (o *ApiThreadInteraction) UnsetErrorTimestamp() {
+	o.ErrorTimestamp.Unset()
+}
+
 func (o ApiThreadInteraction) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -114,6 +287,18 @@ func (o ApiThreadInteraction) ToMap() (map[string]interface{}, error) {
 	toSerialize["user_message"] = o.UserMessage
 	if !IsNil(o.AssistantActions) {
 		toSerialize["assistant_actions"] = o.AssistantActions
+	}
+	if o.Error.IsSet() {
+		toSerialize["error"] = o.Error.Get()
+	}
+	if o.CompletionTimestamp.IsSet() {
+		toSerialize["completion_timestamp"] = o.CompletionTimestamp.Get()
+	}
+	if o.CanceledTimestamp.IsSet() {
+		toSerialize["canceled_timestamp"] = o.CanceledTimestamp.Get()
+	}
+	if o.ErrorTimestamp.IsSet() {
+		toSerialize["error_timestamp"] = o.ErrorTimestamp.Get()
 	}
 	return toSerialize, nil
 }
