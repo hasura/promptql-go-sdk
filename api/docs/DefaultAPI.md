@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 ## ExecuteProgramExecuteProgramPost
 
-> PromptQlExecutionResult ExecuteProgramExecuteProgramPost(ctx).ExecuteRequest(executeRequest).Execute()
+> PromptQlExecutionResult ExecuteProgramExecuteProgramPost(ctx).Request(request).Execute()
 
 Execute Program
 
@@ -28,11 +28,11 @@ import (
 )
 
 func main() {
-	executeRequest := *openapiclient.NewExecuteRequest("Code_example", "TODO", "TODO", []openapiclient.ExecuteRequestArtifactsInner{openapiclient.ExecuteRequest_artifacts_inner{TableArtifact: openapiclient.NewTableArtifact("Identifier_example", "Title_example", "ArtifactType_example", []map[string]interface{}{map[string]interface{}{"key": interface{}(123)}})}}) // ExecuteRequest | 
+	request := *openapiclient.NewRequest("Version_example", "Code_example", "TODO", *openapiclient.NewDdnConfigV2(), []openapiclient.ExecuteRequestV1ArtifactsInner{openapiclient.ExecuteRequestV1_artifacts_inner{AutomationArtifact: openapiclient.NewAutomationArtifact("Identifier_example", "Title_example", "ArtifactType_example", *openapiclient.NewAutomationArtifactData("Code_example"))}}) // Request | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.DefaultAPI.ExecuteProgramExecuteProgramPost(context.Background()).ExecuteRequest(executeRequest).Execute()
+	resp, r, err := apiClient.DefaultAPI.ExecuteProgramExecuteProgramPost(context.Background()).Request(request).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `DefaultAPI.ExecuteProgramExecuteProgramPost``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -53,7 +53,7 @@ Other parameters are passed through a pointer to a apiExecuteProgramExecuteProgr
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **executeRequest** | [**ExecuteRequest**](ExecuteRequest.md) |  | 
+ **request** | [**Request**](Request.md) |  | 
 
 ### Return type
 
@@ -61,7 +61,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[HTTPBearer](../README.md#HTTPBearer)
+No authorization required
 
 ### HTTP request headers
 
@@ -75,7 +75,7 @@ Name | Type | Description  | Notes
 
 ## QueryQueryPost
 
-> QueryResponse QueryQueryPost(ctx).QueryRequest(queryRequest).Execute()
+> QueryResponse QueryQueryPost(ctx).Request1(request1).Execute()
 
 Query
 
@@ -92,11 +92,11 @@ import (
 )
 
 func main() {
-	queryRequest := *openapiclient.NewQueryRequest("Version_example", *openapiclient.NewDdnConfig("Url_example"), "Timezone_example", []openapiclient.ApiThreadInteraction{*openapiclient.NewApiThreadInteraction(*openapiclient.NewApiThreadUserMessage("Text_example"))}, false) // QueryRequest | 
+	request1 := openapiclient.Request_1{QueryRequestV1: openapiclient.NewQueryRequestV1(false, "Timezone_example", []openapiclient.ApiThreadInteraction{*openapiclient.NewApiThreadInteraction(*openapiclient.NewApiThreadUserMessage("Text_example"))}, "Version_example", *openapiclient.NewDdnConfig("Url_example"))} // Request1 | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.DefaultAPI.QueryQueryPost(context.Background()).QueryRequest(queryRequest).Execute()
+	resp, r, err := apiClient.DefaultAPI.QueryQueryPost(context.Background()).Request1(request1).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `DefaultAPI.QueryQueryPost``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -117,7 +117,7 @@ Other parameters are passed through a pointer to a apiQueryQueryPostRequest stru
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **queryRequest** | [**QueryRequest**](QueryRequest.md) |  | 
+ **request1** | [**Request1**](Request1.md) |  | 
 
 ### Return type
 
@@ -125,7 +125,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[HTTPBearer](../README.md#HTTPBearer)
+No authorization required
 
 ### HTTP request headers
 

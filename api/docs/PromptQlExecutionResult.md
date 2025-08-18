@@ -7,14 +7,14 @@ Name | Type | Description | Notes
 **Output** | **string** |  | 
 **Error** | **NullableString** |  | 
 **AccessedArtifactIds** | **[]string** |  | 
-**ModifiedArtifacts** | [**[]ExecuteRequestArtifactsInner**](ExecuteRequestArtifactsInner.md) |  | 
+**ModifiedArtifacts** | [**[]ExecuteRequestV1ArtifactsInner**](ExecuteRequestV1ArtifactsInner.md) |  | 
 **LlmUsages** | [**[]LlmUsage**](LlmUsage.md) |  | 
 
 ## Methods
 
 ### NewPromptQlExecutionResult
 
-`func NewPromptQlExecutionResult(output string, error_ NullableString, accessedArtifactIds []string, modifiedArtifacts []ExecuteRequestArtifactsInner, llmUsages []LlmUsage, ) *PromptQlExecutionResult`
+`func NewPromptQlExecutionResult(output string, error_ NullableString, accessedArtifactIds []string, modifiedArtifacts []ExecuteRequestV1ArtifactsInner, llmUsages []LlmUsage, ) *PromptQlExecutionResult`
 
 NewPromptQlExecutionResult instantiates a new PromptQlExecutionResult object
 This constructor will assign default values to properties that have it defined,
@@ -101,20 +101,20 @@ SetAccessedArtifactIds sets AccessedArtifactIds field to given value.
 
 ### GetModifiedArtifacts
 
-`func (o *PromptQlExecutionResult) GetModifiedArtifacts() []ExecuteRequestArtifactsInner`
+`func (o *PromptQlExecutionResult) GetModifiedArtifacts() []ExecuteRequestV1ArtifactsInner`
 
 GetModifiedArtifacts returns the ModifiedArtifacts field if non-nil, zero value otherwise.
 
 ### GetModifiedArtifactsOk
 
-`func (o *PromptQlExecutionResult) GetModifiedArtifactsOk() (*[]ExecuteRequestArtifactsInner, bool)`
+`func (o *PromptQlExecutionResult) GetModifiedArtifactsOk() (*[]ExecuteRequestV1ArtifactsInner, bool)`
 
 GetModifiedArtifactsOk returns a tuple with the ModifiedArtifacts field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetModifiedArtifacts
 
-`func (o *PromptQlExecutionResult) SetModifiedArtifacts(v []ExecuteRequestArtifactsInner)`
+`func (o *PromptQlExecutionResult) SetModifiedArtifacts(v []ExecuteRequestV1ArtifactsInner)`
 
 SetModifiedArtifacts sets ModifiedArtifacts field to given value.
 

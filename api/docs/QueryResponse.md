@@ -6,13 +6,13 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **ThreadId** | **string** |  | 
 **AssistantActions** | [**[]ApiThreadAssistantAction**](ApiThreadAssistantAction.md) |  | 
-**ModifiedArtifacts** | [**[]ExecuteRequestArtifactsInner**](ExecuteRequestArtifactsInner.md) | List of artifacts created or updated in this request. May contain duplicate artifact identifiers. | 
+**ModifiedArtifacts** | [**[]ExecuteRequestV1ArtifactsInner**](ExecuteRequestV1ArtifactsInner.md) | List of artifacts created or updated in this request. May contain duplicate artifact identifiers. | 
 
 ## Methods
 
 ### NewQueryResponse
 
-`func NewQueryResponse(threadId string, assistantActions []ApiThreadAssistantAction, modifiedArtifacts []ExecuteRequestArtifactsInner, ) *QueryResponse`
+`func NewQueryResponse(threadId string, assistantActions []ApiThreadAssistantAction, modifiedArtifacts []ExecuteRequestV1ArtifactsInner, ) *QueryResponse`
 
 NewQueryResponse instantiates a new QueryResponse object
 This constructor will assign default values to properties that have it defined,
@@ -69,20 +69,20 @@ SetAssistantActions sets AssistantActions field to given value.
 
 ### GetModifiedArtifacts
 
-`func (o *QueryResponse) GetModifiedArtifacts() []ExecuteRequestArtifactsInner`
+`func (o *QueryResponse) GetModifiedArtifacts() []ExecuteRequestV1ArtifactsInner`
 
 GetModifiedArtifacts returns the ModifiedArtifacts field if non-nil, zero value otherwise.
 
 ### GetModifiedArtifactsOk
 
-`func (o *QueryResponse) GetModifiedArtifactsOk() (*[]ExecuteRequestArtifactsInner, bool)`
+`func (o *QueryResponse) GetModifiedArtifactsOk() (*[]ExecuteRequestV1ArtifactsInner, bool)`
 
 GetModifiedArtifactsOk returns a tuple with the ModifiedArtifacts field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetModifiedArtifacts
 
-`func (o *QueryResponse) SetModifiedArtifacts(v []ExecuteRequestArtifactsInner)`
+`func (o *QueryResponse) SetModifiedArtifacts(v []ExecuteRequestV1ArtifactsInner)`
 
 SetModifiedArtifacts sets ModifiedArtifacts field to given value.
 

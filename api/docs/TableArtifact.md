@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 
 ### NewTableArtifact
 
-`func NewTableArtifact(identifier string, title string, artifactType string, data []map[string]interface{}, ) *TableArtifact`
+`func NewTableArtifact(identifier string, title string, artifactType string, data []*map[string]interface{}, ) *TableArtifact`
 
 NewTableArtifact instantiates a new TableArtifact object
 This constructor will assign default values to properties that have it defined,
@@ -90,20 +90,20 @@ SetArtifactType sets ArtifactType field to given value.
 
 ### GetData
 
-`func (o *TableArtifact) GetData() []map[string]interface{}`
+`func (o *TableArtifact) GetData() []*map[string]interface{}`
 
 GetData returns the Data field if non-nil, zero value otherwise.
 
 ### GetDataOk
 
-`func (o *TableArtifact) GetDataOk() (*[]map[string]interface{}, bool)`
+`func (o *TableArtifact) GetDataOk() (*[]*map[string]interface{}, bool)`
 
 GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetData
 
-`func (o *TableArtifact) SetData(v []map[string]interface{})`
+`func (o *TableArtifact) SetData(v []*map[string]interface{})`
 
 SetData sets Data field to given value.
 

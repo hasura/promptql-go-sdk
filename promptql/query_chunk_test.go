@@ -44,8 +44,8 @@ func TestQueryChunks(t *testing.T) {
 
 	expected := promptql.NewQueryChunks()
 	expected.SetThreadId(threadId)
-	expected.SetModifiedArtifacts([]api.ExecuteRequestArtifactsInner{
-		api.TableArtifactAsExecuteRequestArtifactsInner(
+	expected.SetModifiedArtifacts([]api.ExecuteRequestV1ArtifactsInner{
+		api.TableArtifactAsExecuteRequestV1ArtifactsInner(
 			promptql.NewTableArtifact("customer_list", "List of Customers", []map[string]any{
 				{"id": float64(3), "name": "Jerry"},
 				{"id": float64(1), "name": "John"},

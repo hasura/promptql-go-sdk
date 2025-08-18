@@ -34,8 +34,8 @@ func TestQueryAndExecuteProgram(t *testing.T) {
 		t.Fatalf("expected non-empty action message, got: %+v", result.AssistantActions[0])
 	}
 
-	expectedArtifacts := []api.ExecuteRequestArtifactsInner{
-		api.TableArtifactAsExecuteRequestArtifactsInner(&api.TableArtifact{
+	expectedArtifacts := []api.ExecuteRequestV1ArtifactsInner{
+		api.TableArtifactAsExecuteRequestV1ArtifactsInner(&api.TableArtifact{
 			Data: []map[string]any{
 				{
 					"id":   float64(1),
@@ -70,7 +70,7 @@ func TestQueryAndExecuteProgram(t *testing.T) {
 
 	execResult, err := client.ExecuteProgram(
 		context.Background(),
-		promptql.NewExecuteProgramRequest(code),
+		promptql.NewExecuteProgramRequestV1(code),
 	)
 	if err != nil {
 		t.Fatalf("expected non-error, got: %s", err)
@@ -116,7 +116,7 @@ func createTestClient(t *testing.T) *promptql.Client {
 	return client
 }
 
-func assertTableArtifacts(t *testing.T, expected, results []api.ExecuteRequestArtifactsInner) {
+func assertTableArtifacts(t *testing.T, expected, results []api.ExecuteRequestV1ArtifactsInner) {
 	if artifactLen := len(results); artifactLen == 0 {
 		t.Fatalf("expected len(modified_artifacts) > 0 , got: %d", artifactLen)
 	}

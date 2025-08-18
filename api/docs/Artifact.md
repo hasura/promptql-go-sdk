@@ -7,13 +7,13 @@ Name | Type | Description | Notes
 **Identifier** | **string** |  | 
 **Title** | **string** |  | 
 **ArtifactType** | **string** |  | 
-**Data** | [**VisualizationArtifactData**](VisualizationArtifactData.md) | Visualization data containing HTML and visualization data | 
+**Data** | [**AutomationArtifactData**](AutomationArtifactData.md) | Automation data containing Python code and optional sample input | 
 
 ## Methods
 
 ### NewArtifact
 
-`func NewArtifact(identifier string, title string, artifactType string, data VisualizationArtifactData, ) *Artifact`
+`func NewArtifact(identifier string, title string, artifactType string, data AutomationArtifactData, ) *Artifact`
 
 NewArtifact instantiates a new Artifact object
 This constructor will assign default values to properties that have it defined,
@@ -90,20 +90,20 @@ SetArtifactType sets ArtifactType field to given value.
 
 ### GetData
 
-`func (o *Artifact) GetData() VisualizationArtifactData`
+`func (o *Artifact) GetData() AutomationArtifactData`
 
 GetData returns the Data field if non-nil, zero value otherwise.
 
 ### GetDataOk
 
-`func (o *Artifact) GetDataOk() (*VisualizationArtifactData, bool)`
+`func (o *Artifact) GetDataOk() (*AutomationArtifactData, bool)`
 
 GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetData
 
-`func (o *Artifact) SetData(v VisualizationArtifactData)`
+`func (o *Artifact) SetData(v AutomationArtifactData)`
 
 SetData sets Data field to given value.
 

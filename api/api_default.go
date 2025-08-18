@@ -25,11 +25,11 @@ type DefaultAPIService service
 type ApiExecuteProgramExecuteProgramPostRequest struct {
 	ctx context.Context
 	ApiService *DefaultAPIService
-	executeRequest *ExecuteRequest
+	request *ExecuteRequest
 }
 
-func (r ApiExecuteProgramExecuteProgramPostRequest) ExecuteRequest(executeRequest ExecuteRequest) ApiExecuteProgramExecuteProgramPostRequest {
-	r.executeRequest = &executeRequest
+func (r ApiExecuteProgramExecuteProgramPostRequest) Request(request ExecuteRequest) ApiExecuteProgramExecuteProgramPostRequest {
+	r.request = &request
 	return r
 }
 
@@ -70,8 +70,8 @@ func (a *DefaultAPIService) ExecuteProgramExecuteProgramPostRequest(r ApiExecute
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.executeRequest == nil {
-		return nil, reportError("executeRequest is required and must be specified")
+	if r.request == nil {
+		return nil, reportError("request is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -92,7 +92,7 @@ func (a *DefaultAPIService) ExecuteProgramExecuteProgramPostRequest(r ApiExecute
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.executeRequest
+	localVarPostBody = r.request
 
 	return a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 }
@@ -172,11 +172,11 @@ func (a *DefaultAPIService) ExecuteProgramExecuteProgramPostExecute(r ApiExecute
 type ApiQueryQueryPostRequest struct {
 	ctx context.Context
 	ApiService *DefaultAPIService
-	queryRequest *QueryRequest
+	request1 *QueryRequest
 }
 
-func (r ApiQueryQueryPostRequest) QueryRequest(queryRequest QueryRequest) ApiQueryQueryPostRequest {
-	r.queryRequest = &queryRequest
+func (r ApiQueryQueryPostRequest) Request1(request1 QueryRequest) ApiQueryQueryPostRequest {
+	r.request1 = &request1
 	return r
 }
 
@@ -217,8 +217,8 @@ func (a *DefaultAPIService) QueryQueryPostRequest(r ApiQueryQueryPostRequest) (*
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.queryRequest == nil {
-		return nil, reportError("queryRequest is required and must be specified")
+	if r.request1 == nil {
+		return nil, reportError("request1 is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -239,7 +239,7 @@ func (a *DefaultAPIService) QueryQueryPostRequest(r ApiQueryQueryPostRequest) (*
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.queryRequest
+	localVarPostBody = r.request1
 
 	return a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 }

@@ -22,7 +22,7 @@ type QueryStreamCallback func(chunk api.QueryResponseChunk) error
 // sending messages and receiving responses. The response is non-streaming.
 //
 // [Natural Language Query API]: https://hasura.io/docs/promptql/promptql-apis/natural-language-api/
-func (c *Client) Query(ctx context.Context, body api.QueryRequest) (*api.QueryResponse, error) {
+func (c *Client) Query(ctx context.Context, body api.QueryRequestV1) (*api.QueryResponse, error) {
 	ctx, span := tracer.Start(ctx, "Query")
 	defer span.End()
 
@@ -36,7 +36,8 @@ func (c *Client) Query(ctx context.Context, body api.QueryRequest) (*api.QueryRe
 
 	validatedBody.Stream = false
 
-	req := c.APIClient.DefaultAPI.QueryQueryPost(ctx).QueryRequest(validatedBody)
+	req := c.APIClient.DefaultAPI.QueryQueryPost(ctx).
+		Request1(api.QueryRequestV1AsQueryRequest(&validatedBody))
 
 	result, _, err := req.Execute()
 	if err != nil {
@@ -53,7 +54,7 @@ func (c *Client) Query(ctx context.Context, body api.QueryRequest) (*api.QueryRe
 // [Natural Language Query API]: https://hasura.io/docs/promptql/promptql-apis/natural-language-api/
 func (c *Client) QueryStream(
 	ctx context.Context,
-	body api.QueryRequest,
+	body api.QueryRequestV1,
 	callback QueryStreamCallback,
 ) error {
 	ctx, span := tracer.Start(ctx, "QueryStream")
@@ -75,7 +76,8 @@ func (c *Client) QueryStream(
 	}
 
 	validatedBody.Stream = true
-	queryRequest := c.APIClient.DefaultAPI.QueryQueryPost(ctx).QueryRequest(validatedBody)
+	queryRequest := c.APIClient.DefaultAPI.QueryQueryPost(ctx).
+		Request1(api.QueryRequestV1AsQueryRequest(&validatedBody))
 
 	req, err := c.DefaultAPI.QueryQueryPostRequest(queryRequest)
 	if err != nil {
@@ -142,7 +144,7 @@ func (c *Client) QueryStream(
 	return readErr
 }
 
-func (c *Client) validateQueryRequest(body api.QueryRequest) (api.QueryRequest, error) {
+func (c *Client) validateQueryRequest(body api.QueryRequestV1) (api.QueryRequestV1, error) {
 	if len(body.Interactions) == 0 {
 		return body, errors.New("require at least 1 interaction")
 	}
@@ -174,7 +176,7 @@ func (c *Client) validateQueryRequest(body api.QueryRequest) (api.QueryRequest, 
 
 	if c.config.AIPrimitivesLlmProvider != nil &&
 		(body.AiPrimitivesLlm.Get() == nil || body.AiPrimitivesLlm.Get().IsNil()) {
-		llm := api.NewExecuteRequestAiPrimitivesLlm(c.config.AIPrimitivesLlmProvider)
+		llm := api.NewExecuteRequestV1AiPrimitivesLlm(c.config.AIPrimitivesLlmProvider)
 		body.AiPrimitivesLlm.Set(&llm)
 	}
 
@@ -182,8 +184,8 @@ func (c *Client) validateQueryRequest(body api.QueryRequest) (api.QueryRequest, 
 }
 
 // NewQueryRequestMessage is a convenient function to create a simple query request with message only.
-func NewQueryRequestMessage(message string) api.QueryRequest {
-	return api.QueryRequest{
+func NewQueryRequestMessage(message string) api.QueryRequestV1 {
+	return api.QueryRequestV1{
 		Interactions: []api.ApiThreadInteraction{
 			{
 				UserMessage: api.ApiThreadUserMessage{
